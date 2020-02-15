@@ -26,7 +26,6 @@ output_to_dir = fn {code, src_path, out_path, rel_path}:
 
   attempt:
     dir = dirname(out_path)
-    warn:: dir
     mkdirSync:: dir, {recursive: true}
     warn:: `created ${dir}`
 
