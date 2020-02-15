@@ -1,0 +1,57 @@
+{readFileSync, writeFileSync, mkdirSync, readdirSync, statSync} = require:: `fs`
+{join, dirname, basename, relative} = require:: `path`
+
+{parse} = require:: `@fink/larix`
+{generate} = require:: `@fink/loxia`
+{get_files} = require:: `./files`
+
+
+{warn} = console
+
+
+transform = fn source, filename:
+  fink_ast = parse(source)
+  {code} = generate(fink_ast, filename, source)
+  code
+
+
+compile = fn filename:
+  buff = readFileSync(filename)
+  source = buff.toString(`utf8`)
+  transform(source, filename)
+
+
+output_to_dir = fn {code, src_path, out_path, rel_path}:
+  warn:: `compiled ${src_path} -> ${out_path}`
+
+  attempt:
+    dir = dirname(out_path)
+    warn:: dir
+    mkdirSync:: dir, {recursive: true}
+    warn:: `created ${dir}`
+
+  writeFileSync(out_path, code)
+  out_path
+
+
+output_code = fn {stdout}, item:
+  match item.out_path:
+    null: stdout.write(`${item.code}\n`)
+    else: output_to_dir:: item
+
+
+compile_all = fn proc, src, out_dir=null:
+  files = get_files:: src, out_dir
+
+  processed = pipe files:
+    map {src_path, out_path, rel_path}:
+      code = compile(src_path)
+      {code, src_path, out_path, rel_path}
+
+    map item:
+      output_code:: proc, item
+
+    fold item, cntr=0:
+      cntr + 1
+
+  warn:: `\nprocessed ${processed} file(s)`
