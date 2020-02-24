@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@fink/larix": "^1.1.0",
-    "@fink/loxia": "^1.2.0"
+    "@fink/loxia": "^1.2.0",
+    "yargs": "^15.1.0"
   }
 }
