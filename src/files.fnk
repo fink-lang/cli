@@ -17,8 +17,9 @@ expand_source = fn file_or_dir:
 
   if:
     is_dir:
-      pipe walk(file_or_dir):  map src_path:
-        {src_path, src_dir: file_or_dir}
+      pipe walk(file_or_dir):
+        map src_path:
+          {src_path, src_dir: file_or_dir}
     else:
       src_dir = dirname(file_or_dir)
       [{src_path: file_or_dir, src_dir}]
@@ -28,6 +29,9 @@ get_files = fn sources, out_dir:
   pipe sources:
     flat_map source:
       expand_source:: source
+
+    filter {src_path, src_dir}:
+      src_path.endsWith(`.fnk`)
 
     map {src_path, src_dir}:
       rel_path = relative(src_dir, src_path)

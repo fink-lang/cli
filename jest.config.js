@@ -7,7 +7,7 @@ module.exports = {
 
   modulePathIgnorePatterns: ['<rootDir>/build/'],
 
-  testMatch: ['<rootDir>/**/*.test.*'],
+  testMatch: ['<rootDir>/**/*.test.fnk'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
   watchPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 

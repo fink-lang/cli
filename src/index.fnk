@@ -13,7 +13,10 @@ help = fn ...args: fn parser: parser.help(...args)
 
 
 main = fn process:
-  {argv} = pipe yargs(process.argv.slice(2)):
+  # TODO: remove `node, fnk` once supported by larix
+  [node, fnk,...args] = process.argv
+
+  {argv} = pipe yargs(args):
     config:: {`camel-case-expansion`: false}
     version:: false
     usage:: `$0 --src file-or-dir [...] [--out-dir ouput-dir]`
@@ -29,7 +32,7 @@ main = fn process:
 
     help()
 
-  compile_all:: process, argv.src, argv.(`out-dir`)
+  compile_all:: process, argv.src, argv.`out-dir`
 
 
 main(process)

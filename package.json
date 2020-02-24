@@ -27,24 +27,24 @@
     "cd": "run clean test build release",
     "release": "semantic-release"
   },
-  "bin" : {
-    "fnk" : "./index.js"
- },
+  "bin": {
+    "fnk": "./index.js"
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "devDependencies": {
+    "@fink/require-hook": "^1.0.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^25.1.0",
     "npx-run": "^2.1.2",
-    "semantic-release": "^17.0.2",
-    "@fink/require-hook": "^1.0.0"
+    "semantic-release": "^17.0.4"
   },
   "dependencies": {
-    "@fink/larix": "^1.0.0",
-    "@fink/loxia": "^1.0.0"
+    "@fink/larix": "^1.1.0",
+    "@fink/loxia": "^1.2.0"
   }
 }

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`files gets files from dir 1`] = `
+Array [
+  Object {
+    "out_path": "build/test/compile.js",
+    "rel_path": "compile.fnk",
+    "src_path": "src/compile.fnk",
+  },
+  Object {
+    "out_path": "build/test/files.js",
+    "rel_path": "files.fnk",
+    "src_path": "src/files.fnk",
+  },
+  Object {
+    "out_path": "build/test/files.test.js",
+    "rel_path": "files.test.fnk",
+    "src_path": "src/files.test.fnk",
+  },
+  Object {
+    "out_path": "build/test/index.js",
+    "rel_path": "index.fnk",
+    "src_path": "src/index.fnk",
+  },
+  Object {
+    "out_path": "build/test/testing.js",
+    "rel_path": "testing.fnk",
+    "src_path": "src/testing.fnk",
+  },
+  Object {
+    "out_path": "build/test/testing.test.js",
+    "rel_path": "testing.test.fnk",
+    "src_path": "src/testing.test.fnk",
+  },
+]
+`;

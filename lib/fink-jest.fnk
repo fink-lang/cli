@@ -5,8 +5,8 @@
 
 transform = fn source, filename:
   fink_ast = parse(source)
-  {code} = generate(fink_ast, filename, source)
-  code
+  {code, map} = generate(fink_ast, filename, source)
+  {code, map}
 
 
 process = fn src, filename:
