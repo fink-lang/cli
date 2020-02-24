@@ -1,0 +1,45 @@
+{readdirSync, statSync} = require:: `fs`
+{join, dirname, basename, relative} = require:: `path`
+
+
+walk = fn dir:
+  pipe readdirSync(dir, {withFileTypes: true}):
+    flat_map entry:
+      is_dir = entry.isDirectory()
+      if:
+        is_dir: walk(join(dir, entry.name))
+        else: [join(dir, entry.name)]
+
+
+expand_source = fn file_or_dir:
+  stat = statSync(file_or_dir)
+  is_dir = stat.isDirectory()
+
+  if:
+    is_dir:
+      pipe walk(file_or_dir):
+        map src_path:
+          {src_path, src_dir: file_or_dir}
+    else:
+      src_dir = dirname(file_or_dir)
+      [{src_path: file_or_dir, src_dir}]
+
+
+get_files = fn sources, out_dir:
+  pipe sources:
+    flat_map source:
+      expand_source:: source
+
+    filter {src_path, src_dir}:
+      src_path.endsWith(`.fnk`)
+
+    map {src_path, src_dir}:
+      rel_path = relative(src_dir, src_path)
+      rel_dir = dirname(rel_path)
+      name = basename(src_path, `.fnk`)
+
+      out_path = match out_dir:
+        null: null
+        else: join(out_dir, rel_dir, `${name}.js`)
+
+      {src_path, out_path, rel_path}

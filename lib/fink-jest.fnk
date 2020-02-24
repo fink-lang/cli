@@ -1,0 +1,14 @@
+
+{parse} = require:: `@fink/larix`
+{generate} = require:: `@fink/loxia`
+
+
+transform = fn source, filename:
+  fink_ast = parse(source)
+  {code, map} = generate(fink_ast, filename, source)
+  {code, map}
+
+
+process = fn src, filename:
+  transform(src, filename)
+

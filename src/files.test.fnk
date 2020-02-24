@@ -1,0 +1,34 @@
+{
+  describe, it,
+  mock_fn, anything, snapshot,
+  eq, is,
+  called_with, not_called_with
+} = require:: `./testing`
+
+{walk, expand_source, get_files} = require:: `./files`
+
+{warn} = console
+
+
+describe:: `files`, fn:
+
+  it:: `gets single file`, fn:
+    files = pipe get_files:: [`./src/files.test.fnk`], `./build/`:
+      fold item, acc=[]:
+        [...acc, item]
+
+    files eq [{
+      src_path: `./src/files.test.fnk`,
+      out_path: `build/files.test.js`,
+      rel_path: `files.test.fnk`
+    }]
+
+
+  it:: `gets files from dir`, fn:
+    files = pipe get_files:: [`./src`], `./build/test`:
+      fold item, acc=[]:
+        [...acc, item]
+
+    files eq snapshot
+
+

@@ -1,0 +1,50 @@
+{
+  "name": "@fink/cli",
+  "version": "0.0.0-semantically-released",
+  "engines": {
+    "node": ">=13.0.0"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fink-lang/cli"
+  },
+  "bugs": "https://github.com/fink-lang/cli/issues",
+  "homepage": "https://github.com/fink-lang/cli",
+  "scripts": {
+    "default": "run clean lib test build",
+    "clean": "rimraf ./build",
+    "lib": "node -r @fink/require-hook src/index.fnk --src lib --out-dir build/lib --ignore '**/*.test.js'",
+    "build": "run build:*",
+    "build:dir": "mkdir -p ./build/pkg/",
+    "build:fnk": "node -r @fink/require-hook src/index.fnk --src src --out-dir build/pkg --ignore '**/*.test.js'",
+    "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
+    "test": "run jest",
+    "jest": "jest --verbose --runInBand --no-cache ",
+    "cd": "run clean lib test build release",
+    "release": "semantic-release"
+  },
+  "bin": {
+    "fnk": "./index.js"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "@fink/require-hook": "^1.0.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
+    "jest-cli": "^25.1.0",
+    "npx-run": "^2.1.2",
+    "semantic-release": "^17.0.4"
+  },
+  "dependencies": {
+    "@fink/larix": "^1.1.0",
+    "@fink/loxia": "^1.2.0"
+  }
+}
