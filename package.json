@@ -24,7 +24,7 @@
     "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
-    "cd": "run clean test build release",
+    "cd": "run clean lib test build release",
     "release": "semantic-release"
   },
   "bin": {
