@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 yargs = require:: `yargs/yargs`
 
 {compile_all} = require:: `./compile`

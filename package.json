@@ -21,6 +21,7 @@
     "build": "run build:*",
     "build:dir": "mkdir -p ./build/pkg/",
     "build:fnk": "node -r @fink/require-hook src/index.fnk --src src --out-dir build/pkg --ignore '**/*.test.js'",
+    "build:main": "./scripts/prefix-main",
     "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
