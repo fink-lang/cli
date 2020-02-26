@@ -1,9 +1,10 @@
-{readFileSync, writeFileSync, mkdirSync, readdirSync, statSync} = require:: `fs`
-{join, dirname, basename, relative} = require:: `path`
+{readFileSync, writeFileSync, mkdirSync, readdirSync, statSync} = import `fs`
+{join, dirname, basename, relative} = import `path`
 
-{parse} = require:: `@fink/larix`
-{generate} = require:: `@fink/loxia`
-{get_files} = require:: `./files`
+{parse} = import `@fink/larix`
+{generate} = import `@fink/loxia`
+
+{get_files} = import `./files`
 
 
 {warn} = console
@@ -11,8 +12,7 @@
 
 transform = fn source, filename:
   fink_ast = parse(source)
-  {code} = generate(fink_ast, filename, source)
-  code
+  generate(fink_ast, filename, source)
 
 
 compile = fn filename:
@@ -44,7 +44,7 @@ compile_all = fn proc, src, out_dir=null:
 
   processed = pipe files:
     map {src_path, out_path, rel_path}:
-      code = compile(src_path)
+      {code} = compile(src_path)
       {code, src_path, out_path, rel_path}
 
     map item:

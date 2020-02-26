@@ -1,0 +1,35 @@
+{
+  describe, it,
+  mock_fn, mock, anything, snapshot,
+  eq, is,
+  called_with, not_called_with
+} = import `./testing`
+
+
+mock:: `@fink/loxia`, fn: {
+  generate: mock_fn:: fn: {code: `test-code`, map: `test-map`}
+}
+
+{readdirSync, statSync} = import `fs`
+
+{compile_all} = import `./compile`
+
+
+describe:: compile_all, fn:
+
+  it:: `compiles file to stdout`, fn:
+    stdout = {write: mock_fn()}
+
+    compile_all:: {stdout}, [`./src/compile.test.fnk`]
+
+    stdout.write called_with [`test-code\n`]
+
+
+  it:: `compiles files to out-dir`, fn:
+    stdout = {write: mock_fn()}
+
+    compile_all:: {stdout}, [`./src`], `./build/test`
+
+    files = readdirSync:: `./build/test`
+
+    files eq snapshot

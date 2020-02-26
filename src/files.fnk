@@ -1,22 +1,20 @@
-{readdirSync, statSync} = require:: `fs`
-{join, dirname, basename, relative} = require:: `path`
+{readdirSync, statSync} = import `fs`
+{join, dirname, basename, relative} = import `path`
 
 
 walk = fn dir:
   pipe readdirSync(dir, {withFileTypes: true}):
     flat_map entry:
-      is_dir = entry.isDirectory()
-      if:
-        is_dir: walk(join(dir, entry.name))
+      match true:
+        entry.isDirectory(): walk(join(dir, entry.name))
         else: [join(dir, entry.name)]
 
 
 expand_source = fn file_or_dir:
   stat = statSync(file_or_dir)
-  is_dir = stat.isDirectory()
 
-  if:
-    is_dir:
+  match true:
+    stat.isDirectory():
       pipe walk(file_or_dir):
         map src_path:
           {src_path, src_dir: file_or_dir}

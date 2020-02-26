@@ -1,24 +1,16 @@
-yargs = require:: `yargs/yargs`
+{yargs, config, option, usage, version, help} = import `./yargs`
 
-{compile_all} = require:: `./compile`
-
-{log, warn} = console
-
-
-config = fn ...args: fn parser: parser.parserConfiguration(...args)
-option = fn ...args: fn parser: parser.option(...args)
-usage = fn ...args: fn parser: parser.usage(...args)
-version = fn ...args: fn parser: parser.version(...args)
-help = fn ...args: fn parser: parser.help(...args)
+{compile_all} = import `./compile`
 
 
 main = fn process:
   # TODO: remove `node, fnk` once supported by larix
-  [node, fnk,...args] = process.argv
+  [,, ...args] = process.argv
 
-  {argv} = pipe yargs(args):
+  {argv} = pipe yargs:: args:
     config:: {`camel-case-expansion`: false}
     version:: false
+
     usage:: `$0 --src file-or-dir [...] [--out-dir ouput-dir]`
 
     option:: `src`, {
@@ -27,7 +19,8 @@ main = fn process:
       }
 
     option:: `out-dir`, {
-        describe: `The directory to generate code in.`
+        describe: `The directory to generate code in.`,
+        default: null
       }
 
     help()
@@ -35,5 +28,9 @@ main = fn process:
   compile_all:: process, argv.src, argv.`out-dir`
 
 
-main(process)
+match require.main:
+  # istanbul ignore next
+  module: main(process)
+
+
 

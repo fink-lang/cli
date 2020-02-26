@@ -1,16 +1,9 @@
-{
-  describe, it,
-  mock_fn, anything, snapshot,
-  eq, is,
-  called_with, not_called_with
-} = require:: `./testing`
+{describe, it, snapshot, eq} = import `./testing`
 
-{walk, expand_source, get_files} = require:: `./files`
-
-{warn} = console
+{walk, expand_source, get_files} = import `./files`
 
 
-describe:: `files`, fn:
+describe:: get_files, fn:
 
   it:: `gets single file`, fn:
     files = pipe get_files:: [`./src/files.test.fnk`], `./build/`:
@@ -23,6 +16,16 @@ describe:: `files`, fn:
       rel_path: `files.test.fnk`
     }]
 
+  it:: `gets single file no putput`, fn:
+    files = pipe get_files:: [`./src/files.test.fnk`], null:
+      fold item, acc=[]:
+        [...acc, item]
+
+    files eq [{
+      src_path: `./src/files.test.fnk`,
+      out_path: null,
+      rel_path: `files.test.fnk`
+    }]
 
   it:: `gets files from dir`, fn:
     files = pipe get_files:: [`./src`], `./build/test`:

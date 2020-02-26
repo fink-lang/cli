@@ -1,6 +1,8 @@
+{transformSync: babelTransform} = import `@babel/core`
+{parse} = import `@fink/larix`
+{generate} = import `@fink/loxia`
 
-{parse} = require:: `@fink/larix`
-{generate} = require:: `@fink/loxia`
+babel_istanbul = import `babel-plugin-istanbul`
 
 
 transform = fn source, filename:
@@ -9,6 +11,26 @@ transform = fn source, filename:
   {code, map}
 
 
-process = fn src, filename:
-  transform(src, filename)
+process = fn src, filename, {rootDir}:
+  {code: js_code, map: input_source_map} = transform(src, filename)
+
+  opts = {
+    filename,
+    auxiliaryCommentBefore: ` istanbul ignore next `,
+    plugins: [
+      [
+        babel_istanbul,
+        {
+          cwd: rootDir,
+          include: [`**/*.fnk`],
+          extension: `.fnk`,
+          inputSourceMap: input_source_map
+        }
+      ]
+    ]
+  }
+  {code, map} = babelTransform(js_code, opts)
+  # TODO: remove once larix has support for last destructuring expr
+  {code, map}
+
 
