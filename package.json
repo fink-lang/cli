@@ -37,7 +37,7 @@
     }
   },
   "devDependencies": {
-    "@fink/require-hook": "^1.0.0",
+    "@fink/require-hook": "^2.0.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^25.1.0",
