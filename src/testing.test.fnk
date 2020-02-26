@@ -3,7 +3,7 @@
   mock_fn, anything,
   eq, is,
   called_with, not_called_with
-} = require:: `./testing`
+} = import `./testing`
 
 
 foo = mock_fn:: fn a, b:

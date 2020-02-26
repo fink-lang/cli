@@ -1,0 +1,29 @@
+{readdirSync, statSync} = import `fs`
+
+{describe, it, mock_fn, mock, called_with} = import `./testing`
+
+
+mock:: `./compile`, fn: {
+  compile_all: mock_fn:: fn: null
+}
+
+{compile_all} = import `./compile`
+{main} = import `./index`
+
+
+describe:: main, fn:
+
+  it:: `compiles file without out-dir`, fn:
+    proc = {argv: [null, null, `--src`, `./src/index.fnk`]}
+
+    main:: proc
+
+    compile_all called_with [proc, [`./src/index.fnk`], null]
+
+
+  it:: `compiles dir tp out-dir`, fn:
+    proc = {argv: [null, null, `--src`, `./src`, `--out-dir`, `./build/test`]}
+
+    main:: proc
+
+    compile_all called_with [proc, [`./src`], `./build/test`]

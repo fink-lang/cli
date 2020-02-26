@@ -45,8 +45,8 @@
     "semantic-release": "^17.0.4"
   },
   "dependencies": {
-    "@fink/larix": "^1.1.0",
-    "@fink/loxia": "^1.2.0",
+    "@fink/larix": "^2.1.0",
+    "@fink/loxia": "^2.1.0",
     "yargs": "^15.1.0"
   }
 }

@@ -1,9 +1,10 @@
 
 module.exports = {
+  testEnvironment: 'node',
   setupFiles: [],
   moduleFileExtensions: ['js', 'fnk'],
   transform: {'^.+\\.fnk$': ['<rootDir>/build/lib/fink-jest.js']},
-  transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
+  transformIgnorePatterns: ['.+/node_modules/', '<rootDir>/build/'],
 
   modulePathIgnorePatterns: ['<rootDir>/build/'],
 
@@ -16,7 +17,8 @@ module.exports = {
   clearMocks: true,
   resetMocks: false,
 
-  collectCoverage: false,
+  collectCoverage: true,
+  // coverageProvider: 'v8',
   collectCoverageFrom: ['<rootDir>/src/**/*.fnk'],
   coverageDirectory: './build/cov',
   coverageReporters: ['lcov'],

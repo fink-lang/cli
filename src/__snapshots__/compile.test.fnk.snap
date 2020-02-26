@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compile_all compiles files to out-dir 1`] = `
+Array [
+  "compile.js",
+  "compile.test.js",
+  "files.js",
+  "files.test.js",
+  "index.js",
+  "index.test.js",
+  "testing.js",
+  "testing.test.js",
+  "yargs.js",
+]
+`;
