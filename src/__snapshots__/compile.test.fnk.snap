@@ -13,3 +13,13 @@ Array [
   "yargs.js",
 ]
 `;
+
+exports[`compile_all ignores files 1`] = `
+Array [
+  "compile.js",
+  "files.js",
+  "index.js",
+  "testing.js",
+  "yargs.js",
+]
+`;

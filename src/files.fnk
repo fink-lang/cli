@@ -1,5 +1,6 @@
 {readdirSync, statSync} = import `fs`
-{join, dirname, basename, relative} = import `path`
+{join, dirname, basename, relative, resolve} = import `path`
+minimatch = import `minimatch`
 
 
 walk = fn dir:
@@ -20,16 +21,21 @@ expand_source = fn file_or_dir:
           {src_path, src_dir: file_or_dir}
     else:
       src_dir = dirname(file_or_dir)
-      [{src_path: file_or_dir, src_dir}]
+      [{src_path: join(file_or_dir), src_dir}]
 
 
-get_files = fn sources, out_dir:
+get_files = fn sources, out_dir, ignore=null:
   pipe sources:
     flat_map source:
       expand_source:: source
 
-    filter {src_path, src_dir}:
+    filter {src_path}:
       src_path.endsWith(`.fnk`)
+
+    filter {src_path}:
+      match ignore:
+        null: true
+        else: !minimatch(src_path, join(ignore))
 
     map {src_path, src_dir}:
       rel_path = relative(src_dir, src_path)

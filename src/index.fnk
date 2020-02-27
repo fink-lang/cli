@@ -23,9 +23,14 @@ main = fn process:
         default: null
       }
 
+    option:: `ignore`, {
+        describe: `Glob paths/patterns for files to ignore`,
+        default: null
+      }
+
     help()
 
-  compile_all:: process, argv.src, argv.`out-dir`
+  compile_all:: process, argv.src, argv.`out-dir`, argv.ignore
 
 
 match require.main:

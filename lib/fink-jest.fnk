@@ -15,6 +15,8 @@ process = fn src, filename, {rootDir}:
 
   opts = {
     filename,
+    sourceMap: true,
+    inputSourceMap: input_source_map,
     auxiliaryCommentBefore: ` istanbul ignore next `,
     plugins: [
       [
@@ -31,5 +33,3 @@ process = fn src, filename, {rootDir}:
   {code, map} = babelTransform(js_code, opts)
   # TODO: remove once larix has support for last destructuring expr
   {code, map}
-
-

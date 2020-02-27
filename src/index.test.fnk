@@ -18,12 +18,20 @@ describe:: main, fn:
 
     main:: proc
 
-    compile_all called_with [proc, [`./src/index.fnk`], null]
+    compile_all called_with [proc, [`./src/index.fnk`], null, null]
 
 
-  it:: `compiles dir tp out-dir`, fn:
+  it:: `compiles dir to out-dir`, fn:
     proc = {argv: [null, null, `--src`, `./src`, `--out-dir`, `./build/test`]}
 
     main:: proc
 
-    compile_all called_with [proc, [`./src`], `./build/test`]
+    compile_all called_with [proc, [`./src`], `./build/test`, null]
+
+
+  it:: `ignores files`, fn:
+    proc = {argv: [null, null, `--src`, `./src`, `--ignore`, `./src/*.test.*`]}
+
+    main:: proc
+
+    compile_all called_with [proc, [`./src`], null, `./src/*.test.*`]
