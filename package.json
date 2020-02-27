@@ -19,10 +19,10 @@
   "scripts": {
     "default": "run clean lib test build",
     "clean": "rimraf ./build",
-    "lib": "node -r @fink/require-hook src/index.fnk --src lib --out-dir build/lib --ignore '**/*.test.js'",
+    "lib": "node -r @fink/require-hook src/index.fnk --src lib --out-dir build/lib --ignore 'src/**/*.test.fnk'",
     "build": "run build:*",
     "build:dir": "mkdir -p ./build/pkg/",
-    "build:fnk": "node -r @fink/require-hook src/index.fnk --src src --out-dir build/pkg --ignore '**/*.test.js'",
+    "build:fnk": "node -r @fink/require-hook src/index.fnk --src src --out-dir build/pkg --ignore 'src/**/*.test.fnk'",
     "build:main": "./scripts/prefix-main",
     "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
     "test": "run jest",
@@ -49,6 +49,7 @@
   "dependencies": {
     "@fink/larix": "^3.0.0",
     "@fink/loxia": "^3.0.0",
+    "minimatch": "^3.0.4",
     "yargs": "^15.1.0"
   }
 }

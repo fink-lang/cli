@@ -1,5 +1,5 @@
-{readFileSync, writeFileSync, mkdirSync, readdirSync, statSync} = import `fs`
-{join, dirname, basename, relative} = import `path`
+{readFileSync, writeFileSync, mkdirSync} = import `fs`
+{dirname} = import `path`
 
 {parse} = import `@fink/larix`
 {generate} = import `@fink/loxia`
@@ -39,12 +39,13 @@ output_code = fn {stdout}, item:
     else: output_to_dir:: item
 
 
-compile_all = fn proc, src, out_dir=null:
-  files = get_files:: src, out_dir
+
+compile_all = fn proc, src, out_dir=null, ignore=null:
+  files = get_files:: src, out_dir, ignore
 
   processed = pipe files:
     map {src_path, out_path, rel_path}:
-      {code} = compile(src_path)
+      {code} = compile:: src_path
       {code, src_path, out_path, rel_path}
 
     map item:

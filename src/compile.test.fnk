@@ -1,9 +1,6 @@
-{
-  describe, it,
-  mock_fn, mock, anything, snapshot,
-  eq, is,
-  called_with, not_called_with
-} = import `./testing`
+{rmdirSync} = import `fs`
+
+{describe, it, mock_fn, mock, snapshot, eq, called_with} = import `./testing`
 
 
 mock:: `@fink/loxia`, fn: {
@@ -27,8 +24,20 @@ describe:: compile_all, fn:
 
   it:: `compiles files to out-dir`, fn:
     stdout = {write: mock_fn()}
+    rmdirSync(`./build/test`, {recursive: true})
 
     compile_all:: {stdout}, [`./src`], `./build/test`
+
+    files = readdirSync:: `./build/test`
+
+    files eq snapshot
+
+
+  it:: `ignores files`, fn:
+    stdout = {write: mock_fn()}
+    rmdirSync(`./build/test`, {recursive: true})
+
+    compile_all:: {stdout}, [`./src`], `./build/test`, `./src/*.test.fnk`
 
     files = readdirSync:: `./build/test`
 

@@ -11,10 +11,11 @@ describe:: get_files, fn:
         [...acc, item]
 
     files eq [{
-      src_path: `./src/files.test.fnk`,
+      src_path: `src/files.test.fnk`,
       out_path: `build/files.test.js`,
       rel_path: `files.test.fnk`
     }]
+
 
   it:: `gets single file no putput`, fn:
     files = pipe get_files:: [`./src/files.test.fnk`], null:
@@ -22,10 +23,19 @@ describe:: get_files, fn:
         [...acc, item]
 
     files eq [{
-      src_path: `./src/files.test.fnk`,
+      src_path: `src/files.test.fnk`,
       out_path: null,
       rel_path: `files.test.fnk`
     }]
+
+
+  it:: `ignores files`, fn:
+    files = pipe get_files:: [`./src/files.test.fnk`], null, `./src/*.test.fnk`:
+      fold item, acc=[]:
+        [...acc, item]
+
+    files eq []
+
 
   it:: `gets files from dir`, fn:
     files = pipe get_files:: [`./src`], `./build/test`:
