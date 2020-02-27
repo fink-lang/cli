@@ -1,6 +1,8 @@
 {
   "name": "@fink/cli",
   "version": "0.0.0-semantically-released",
+  "description": "CLI for compiling fink to JS",
+  "license": "MIT",
   "engines": {
     "node": ">=13.0.0"
   },
@@ -45,8 +47,8 @@
     "semantic-release": "^17.0.4"
   },
   "dependencies": {
-    "@fink/larix": "^2.1.0",
-    "@fink/loxia": "^2.1.0",
+    "@fink/larix": "^3.0.0",
+    "@fink/loxia": "^3.0.0",
     "yargs": "^15.1.0"
   }
 }
