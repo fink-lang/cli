@@ -17,9 +17,8 @@
   "bugs": "https://github.com/fink-lang/cli/issues",
   "homepage": "https://github.com/fink-lang/cli",
   "scripts": {
-    "default": "run clean lib test build",
+    "default": "run clean test build",
     "clean": "rimraf ./build",
-    "lib": "node -r @fink/require-hook src/index.fnk --src lib --out-dir build/lib --ignore 'src/**/*.test.fnk'",
     "build": "run build:*",
     "build:dir": "mkdir -p ./build/pkg/",
     "build:fnk": "node -r @fink/require-hook src/index.fnk --src src --out-dir build/pkg --ignore 'src/**/*.test.fnk'",
@@ -27,7 +26,7 @@
     "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
-    "cd": "run clean lib test build release",
+    "cd": "run clean test build release",
     "release": "semantic-release"
   },
   "bin": {
@@ -39,6 +38,7 @@
     }
   },
   "devDependencies": {
+    "@fink/jest": "^1.0.0",
     "@fink/require-hook": "^2.0.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.1.0",
