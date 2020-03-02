@@ -1,4 +1,4 @@
-{readFileSync, writeFileSync, mkdirSync} = import `fs`
+{readFileSync, writeFileSync, mkdirSync, existsSync} = import `fs`
 {dirname} = import `path`
 
 {parse} = import `@fink/larix`
@@ -22,14 +22,15 @@ compile = fn filename:
 
 
 output_to_dir = fn {code, src_path, out_path, rel_path}:
-  warn:: `compiled ${src_path} -> ${out_path}`
-
-  attempt:
-    dir = dirname(out_path)
-    mkdirSync:: dir, {recursive: true}
-    warn:: `created ${dir}`
+  dir = dirname(out_path)
+  match false:
+    existsSync(dir):
+      mkdirSync:: dir, {recursive: true}
+      warn:: `created ${dir}`
 
   writeFileSync(out_path, code)
+
+  warn:: `compiled ${src_path} -> ${out_path}`
   out_path
 
 
