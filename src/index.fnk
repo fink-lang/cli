@@ -30,8 +30,13 @@ main = fn process:
 
     help()
 
-  compile_all:: process, argv.src, argv.`out-dir`, argv.ignore
+  [err] = attempt:
+    compile_all:: process, argv.src, argv.`out-dir`, argv.ignore
 
+  match true:
+    err != null:
+      console.error(err)
+      process.exit(-1)
 
 match require.main:
   # istanbul ignore next

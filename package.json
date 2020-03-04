@@ -38,8 +38,8 @@
     }
   },
   "devDependencies": {
-    "@fink/jest": "^1.0.0",
-    "@fink/require-hook": "^2.0.0",
+    "@fink/jest": "^1.1.0",
+    "@fink/require-hook": "^3.1.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.1.0",
     "jest-cli": "^25.1.0",
@@ -47,8 +47,8 @@
     "semantic-release": "^17.0.4"
   },
   "dependencies": {
-    "@fink/larix": "^4.2.1",
-    "@fink/loxia": "^4.2.1",
+    "@fink/larix": "^4.4.0",
+    "@fink/loxia": "^4.4.0",
     "minimatch": "^3.0.4",
     "yargs": "^15.1.0"
   }
