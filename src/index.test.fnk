@@ -1,6 +1,6 @@
 {readdirSync, statSync} = import `fs`
 
-{describe, it, mock_fn, mock, called_with} = import `./testing`
+{describe, it, mock_fn, mock, called_with, to_throw} = import `./testing`
 
 
 mock:: `./compile`, fn: {
@@ -35,3 +35,17 @@ describe:: main, fn:
     main:: proc
 
     compile_all called_with [proc, [`./src`], null, `./src/*.test.*`]
+
+
+  it:: `handles errors`, fn:
+    compile_all.mockImplementation(fn: null())
+    proc = {
+      argv: [null, null, `--src`, `./src`, `--ignore`, `./src/*.test.*`],
+      exit: mock_fn:: null
+    }
+
+    main:: proc
+
+    proc.exit called_with [-1]
+
+
