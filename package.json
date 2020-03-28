@@ -1,5 +1,5 @@
 {
-  "name": "@fink/cli",
+  "name": "@fink/cli-dev",
   "version": "0.0.0-semantically-released",
   "description": "CLI for compiling fink to JS",
   "license": "MIT",
@@ -21,9 +21,10 @@
     "clean": "rimraf ./build",
     "build": "run build:*",
     "build:dir": "mkdir -p ./build/pkg/",
-    "build:fnk": "node -r @fink/require-hook src/index.fnk --src src --out-dir build/pkg --ignore 'src/**/*.test.fnk'",
+    "build:fnk": "fnk --src src --out-dir build/pkg --ignore 'src/**/*.test.fnk'",
     "build:main": "./scripts/prefix-main",
-    "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
+    "build:files": "cp ./README.md ./LICENSE ./build/pkg/",
+    "build:pkg": "./scripts/build-pkg-json",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
     "cd": "run clean test build release",
@@ -38,18 +39,18 @@
     }
   },
   "devDependencies": {
+    "@fink/cli": "^2.1.0",
     "@fink/jest": "^1.1.0",
-    "@fink/require-hook": "^3.1.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.1.0",
-    "jest-cli": "^25.1.0",
+    "jest-cli": "^25.2.3",
     "npx-run": "^2.1.2",
     "semantic-release": "^17.0.4"
   },
   "dependencies": {
-    "@fink/larix": "^4.4.0",
-    "@fink/loxia": "^4.4.0",
+    "@fink/larix": "^4.6.1",
+    "@fink/loxia": "^4.5.2",
     "minimatch": "^3.0.4",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.1"
   }
 }
