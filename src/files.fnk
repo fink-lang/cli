@@ -5,11 +5,12 @@ minimatch = import `minimatch`
 
 walk = fn dir:
   pipe readdirSync(dir, {withFileTypes: true}):
-    flat_map entry:
-      match true:
+    map entry:
+      files = match true:
         entry.isDirectory(): walk(join(dir, entry.name))
         else: [join(dir, entry.name)]
 
+      ...files
 
 expand_source = fn file_or_dir:
   stat = statSync(file_or_dir)
@@ -26,8 +27,8 @@ expand_source = fn file_or_dir:
 
 get_files = fn sources, out_dir, ignore=null:
   pipe sources:
-    flat_map source:
-      expand_source:: source
+    map source:
+      ...expand_source:: source
 
     filter {src_path}:
       src_path.endsWith(`.fnk`)
