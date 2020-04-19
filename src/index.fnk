@@ -4,7 +4,6 @@
 
 
 main = fn process:
-  # TODO: remove `node, fnk` once supported by larix
   [,, ...args] = process.argv
 
   {argv} = pipe yargs:: args:
@@ -35,12 +34,10 @@ main = fn process:
 
   match true:
     err != null:
-      console.error(err)
-      process.exit(-1)
+      console.error:: err
+      process.exit:: -1
+
 
 match require.main:
   # istanbul ignore next
-  module: main(process)
-
-
-
+  module: main:: process

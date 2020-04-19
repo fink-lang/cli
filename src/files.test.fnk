@@ -6,9 +6,7 @@
 describe:: get_files, fn:
 
   it:: `gets single file`, fn:
-    files = pipe get_files:: [`./src/files.test.fnk`], `./build/`:
-      fold item, acc=[]:
-        [...acc, item]
+    [...files] = get_files:: [`./src/files.test.fnk`], `./build/`
 
     files eq [{
       src_path: `src/files.test.fnk`,
@@ -18,9 +16,7 @@ describe:: get_files, fn:
 
 
   it:: `gets single file no putput`, fn:
-    files = pipe get_files:: [`./src/files.test.fnk`], null:
-      fold item, acc=[]:
-        [...acc, item]
+    [...files] = get_files:: [`./src/files.test.fnk`], null
 
     files eq [{
       src_path: `src/files.test.fnk`,
@@ -30,17 +26,13 @@ describe:: get_files, fn:
 
 
   it:: `ignores files`, fn:
-    files = pipe get_files:: [`./src/files.test.fnk`], null, `./src/*.test.fnk`:
-      fold item, acc=[]:
-        [...acc, item]
+    [...files] = get_files:: [`./src/files.test.fnk`], null, `./src/*.test.fnk`
 
     files eq []
 
 
   it:: `gets files from dir`, fn:
-    files = pipe get_files:: [`./src`], `./build/test`:
-      fold item, acc=[]:
-        [...acc, item]
+    [...files] = get_files:: [`./src`], `./build/test`
 
     files eq snapshot
 
