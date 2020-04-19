@@ -11,24 +11,24 @@
 
 
 transform = fn source, filename:
-  fink_ast = parse(source, filename)
-  generate(fink_ast, filename, source)
+  fink_ast = parse:: source, filename
+  generate:: fink_ast, filename, source
 
 
 compile = fn filename:
-  buff = readFileSync(filename)
-  source = buff.toString(`utf8`)
-  transform(source, filename)
+  buff = readFileSync:: filename
+  source = buff.toString:: `utf8`
+  transform:: source, filename
 
 
 output_to_dir = fn {code, src_path, out_path, rel_path}:
-  dir = dirname(out_path)
+  dir = dirname:: out_path
   match false:
-    existsSync(dir):
+    existsSync:: dir:
       mkdirSync:: dir, {recursive: true}
       warn:: `created ${dir}`
 
-  writeFileSync(out_path, code)
+  writeFileSync:: out_path, code
 
   warn:: `compiled ${src_path} -> ${out_path}`
   out_path
@@ -36,7 +36,7 @@ output_to_dir = fn {code, src_path, out_path, rel_path}:
 
 output_code = fn {stdout}, item:
   match item.out_path:
-    null: stdout.write(`${item.code}\n`)
+    null: stdout.write:: `${item.code}\n`
     else: output_to_dir:: item
 
 

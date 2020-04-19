@@ -9,7 +9,6 @@ Array [
   "index.js",
   "index.test.js",
   "testing.js",
-  "testing.test.js",
   "yargs.js",
 ]
 `;
