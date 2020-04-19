@@ -1,7 +1,7 @@
 yargs = import `yargs/yargs`
 
-config = fn ...args: fn parser: parser.parserConfiguration(...args)
-option = fn ...args: fn parser: parser.option(...args)
-usage = fn ...args: fn parser: parser.usage(...args)
-version = fn ...args: fn parser: parser.version(...args)
-help = fn ...args: fn parser: parser.help(...args)
+config = fn ...args: fn parser: parser.parserConfiguration:: ...args
+option = fn ...args: fn parser: parser.option:: ...args
+usage = fn ...args: fn parser: parser.usage:: ...args
+version = fn ...args: fn parser: parser.version:: ...args
+help = fn ...args: fn parser: parser.help:: ...args

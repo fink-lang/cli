@@ -1,4 +1,4 @@
-{describe, it, snapshot, eq} = import `./testing`
+{describe, it, expect, to_equal, to_match_snapshot} = import `./testing`
 
 {walk, expand_source, get_files} = import `./files`
 
@@ -8,32 +8,42 @@ describe:: get_files, fn:
   it:: `gets single file`, fn:
     [...files] = get_files:: [`./src/files.test.fnk`], `./build/`
 
-    files eq [{
-      src_path: `src/files.test.fnk`,
-      out_path: `build/files.test.js`,
-      rel_path: `files.test.fnk`
-    }]
+    expect::
+      files
+      to_equal::
+        list: {
+          src_path: `src/files.test.fnk`,
+          out_path: `build/files.test.js`,
+          rel_path: `files.test.fnk`
+        }
 
 
   it:: `gets single file no putput`, fn:
     [...files] = get_files:: [`./src/files.test.fnk`], null
 
-    files eq [{
-      src_path: `src/files.test.fnk`,
-      out_path: null,
-      rel_path: `files.test.fnk`
-    }]
+    expect::
+      files
+      to_equal::
+        list: {
+          src_path: `src/files.test.fnk`,
+          out_path: null,
+          rel_path: `files.test.fnk`
+        }
 
 
   it:: `ignores files`, fn:
     [...files] = get_files:: [`./src/files.test.fnk`], null, `./src/*.test.fnk`
 
-    files eq []
+    expect::
+      files
+      to_equal:: []
 
 
   it:: `gets files from dir`, fn:
     [...files] = get_files:: [`./src`], `./build/test`
 
-    files eq snapshot
+    expect::
+      files
+      to_match_snapshot
 
 

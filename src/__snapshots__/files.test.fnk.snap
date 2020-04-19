@@ -38,11 +38,6 @@ Array [
     "src_path": "src/testing.fnk",
   },
   Object {
-    "out_path": "build/test/testing.test.js",
-    "rel_path": "testing.test.fnk",
-    "src_path": "src/testing.test.fnk",
-  },
-  Object {
     "out_path": "build/test/yargs.js",
     "rel_path": "yargs.fnk",
     "src_path": "src/yargs.fnk",
