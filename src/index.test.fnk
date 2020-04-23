@@ -1,9 +1,9 @@
 {readdirSync, statSync} = import `fs`
 
-{describe, it, expect, mock_fn, mock, to_have_been_called_with, to_throw} = import `./testing`
+{describe, it, expect, mock_fn, to_be_called_with, to_throw} = import `@fink/jest`
 
 
-mock:: `./compile`, fn:
+jest.mock:: `./compile`, fn:
   {
     compile_all: mock_fn:: fn: null
   }
@@ -21,7 +21,7 @@ describe:: main, fn:
 
     expect::
       compile_all
-      to_have_been_called_with:: proc, [`./src/index.fnk`], null, null
+      to_be_called_with:: proc, [`./src/index.fnk`], null, null
 
 
   it:: `compiles dir to out-dir`, fn:
@@ -31,7 +31,7 @@ describe:: main, fn:
 
     expect::
       compile_all
-      to_have_been_called_with:: proc, [`./src`], `./build/test`, null
+      to_be_called_with:: proc, [`./src`], `./build/test`, null
 
 
   it:: `ignores files`, fn:
@@ -41,7 +41,7 @@ describe:: main, fn:
 
     expect::
       compile_all
-      to_have_been_called_with:: proc, [`./src`], null, `./src/*.test.*`
+      to_be_called_with:: proc, [`./src`], null, `./src/*.test.*`
 
 
   it:: `handles errors`, fn:
@@ -55,6 +55,6 @@ describe:: main, fn:
 
     expect::
       proc.exit
-      to_have_been_called_with:: -1
+      to_be_called_with:: -1
 
 
