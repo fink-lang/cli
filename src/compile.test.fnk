@@ -12,6 +12,11 @@ jest.mock:: `@fink/loxia`, fn:
       }
   }
 
+jest.mock:: `./logging`, fn:
+  {
+   logger: fn: {warn: mock_fn()}
+  }
+
 {readdirSync, statSync} = import `fs`
 
 {compile_all} = import `./compile`
@@ -53,3 +58,16 @@ describe:: compile_all, fn:
     expect::
        files
        to_match_snapshot
+
+
+  it:: `compiles file with inline source-maps`, fn:
+    stdout = {write: mock_fn()}
+
+    compile_all:: {stdout}, [`./src/compile.test.fnk`], null, null, 'inline'
+
+    expect::
+      stdout.write
+      to_be_called_with `
+        test-code
+        //# sourceMappingURL=data:application/json;charset=utf-8;base64,InRlc3QtbWFwIg==
+      `

@@ -1,6 +1,9 @@
 {yargs, config, option, usage, version, help} = import `./yargs`
 
 {compile_all} = import `./compile`
+{logger} = import `./logging`
+
+{error} = logger()
 
 
 main = fn process:
@@ -27,14 +30,19 @@ main = fn process:
         default: null
       }
 
+    option:: `source-maps`, {
+        describe: `Generate sourcemaps`,
+        default: false
+      }
+
     help()
 
   [err] = attempt:
-    compile_all:: process, argv.src, argv.`out-dir`, argv.ignore
+    compile_all:: process, argv.src, argv.`out-dir`, argv.ignore, argv.`source-maps`
 
   match true:
     err != null:
-      console.error:: err
+      error:: err
       process.exit:: -1
 
 

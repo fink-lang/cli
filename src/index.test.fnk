@@ -8,6 +8,12 @@ jest.mock:: `./compile`, fn:
     compile_all: mock_fn:: fn: null
   }
 
+jest.mock:: `./logging`, fn:
+  {
+   logger: fn: {error: mock_fn()}
+  }
+
+
 {compile_all} = import `./compile`
 {main} = import `./index`
 
@@ -21,7 +27,7 @@ describe:: main, fn:
 
     expect::
       compile_all
-      to_be_called_with:: proc, [`./src/index.fnk`], null, null
+      to_be_called_with:: proc, [`./src/index.fnk`], null, null, false
 
 
   it:: `compiles dir to out-dir`, fn:
@@ -31,7 +37,7 @@ describe:: main, fn:
 
     expect::
       compile_all
-      to_be_called_with:: proc, [`./src`], `./build/test`, null
+      to_be_called_with:: proc, [`./src`], `./build/test`, null, false
 
 
   it:: `ignores files`, fn:
@@ -41,7 +47,24 @@ describe:: main, fn:
 
     expect::
       compile_all
-      to_be_called_with:: proc, [`./src`], null, `./src/*.test.*`
+      to_be_called_with:: proc, [`./src`], null, `./src/*.test.*`, false
+
+
+  it:: `compiles with source maps`, fn:
+    proc = {
+      argv: [
+        null, null,
+        `--src`, `./src`,
+        `--ignore`, `./src/*.test.*`,
+        '--source-maps', 'inline'
+      ]
+    }
+
+    main:: proc
+
+    expect::
+      compile_all
+      to_be_called_with:: proc, [`./src`], null, `./src/*.test.*`, 'inline'
 
 
   it:: `handles errors`, fn:

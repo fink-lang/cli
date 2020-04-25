@@ -8,6 +8,8 @@ Array [
   "files.test.js",
   "index.js",
   "index.test.js",
+  "logging.js",
+  "logging.test.js",
   "yargs.js",
 ]
 `;
@@ -17,6 +19,7 @@ Array [
   "compile.js",
   "files.js",
   "index.js",
+  "logging.js",
   "yargs.js",
 ]
 `;
