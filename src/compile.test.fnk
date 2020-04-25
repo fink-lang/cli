@@ -1,15 +1,20 @@
 {rmdirSync} = import `fs`
 
-{describe, it, expect, mock_fn, mock, to_match_snapshot, to_have_been_called_with} = import `./testing`
+{describe, it, expect, mock_fn, mock, to_match_snapshot, to_be_called_with} = import `@fink/jest`
 
 
-mock:: `@fink/loxia`, fn:
+jest.mock:: `@fink/loxia`, fn:
   {
     generate: mock_fn:: fn:
       {
         code: `test-code`,
         map: `test-map`
       }
+  }
+
+jest.mock:: `./logging`, fn:
+  {
+   logger: fn: {warn: mock_fn()}
   }
 
 {readdirSync, statSync} = import `fs`
@@ -26,7 +31,7 @@ describe:: compile_all, fn:
 
     expect::
       stdout.write
-      to_have_been_called_with `test-code\n`
+      to_be_called_with `test-code\n`
 
 
   it:: `compiles files to out-dir`, fn:
@@ -53,3 +58,16 @@ describe:: compile_all, fn:
     expect::
        files
        to_match_snapshot
+
+
+  it:: `compiles file with inline source-maps`, fn:
+    stdout = {write: mock_fn()}
+
+    compile_all:: {stdout}, [`./src/compile.test.fnk`], null, null, 'inline'
+
+    expect::
+      stdout.write
+      to_be_called_with `
+        test-code
+        //# sourceMappingURL=data:application/json;charset=utf-8;base64,InRlc3QtbWFwIg==
+      `
