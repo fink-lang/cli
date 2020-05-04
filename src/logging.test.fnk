@@ -1,27 +1,27 @@
-{describe, it, expect, to_equal} = import `@fink/jest`
+{describe, it, expect, to_equal} = import '@fink/jest'
 
 {logger} = import './logging'
 
 
-describe:: logger, fn:
+describe logger, fn:
 
-  it:: 'logs to console', fn:
+  it 'logs to console', fn:
     {log, error, warn, debug} = logger()
 
-    expect::
+    expect
       log
-      to_equal:: console.log
+      to_equal console.log
 
-    expect::
+    expect
       error
-      to_equal:: console.error
+      to_equal console.error
 
-    expect::
+    expect
       warn
-      to_equal:: console.warn
+      to_equal console.warn
 
-    expect::
+    expect
       debug
-      to_equal:: console.debug
+      to_equal console.debug
 
 

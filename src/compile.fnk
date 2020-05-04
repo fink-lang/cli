@@ -1,72 +1,75 @@
-{readFileSync, writeFileSync, mkdirSync, existsSync} = import `fs`
-{dirname} = import `path`
+{readFileSync, writeFileSync, mkdirSync, existsSync} = import 'fs'
+{dirname} = import 'path'
 
-{parse} = import `@fink/larix`
-{generate} = import `@fink/loxia`
+{parse} = import '@fink/larix'
+{generate} = import '@fink/loxia'
 
-convert_source_map = import `convert-source-map`
+convert_source_map = import 'convert-source-map'
 
-
-{get_files} = import `./files`
-
+{get_files} = import './files'
 {logger} = import './logging'
 
 {warn} = logger()
 
 
 transform = fn source, filename:
-  fink_ast = parse:: source, filename
-  generate:: fink_ast, filename, source
+  [ast, {errors}] = parse source, filename
+
+  match errors:
+    {length: 0}:
+      generate ast, filename, source
+    else:
+      {errors}
 
 
 compile = fn filename:
-  buff = readFileSync:: filename
-  source = buff.toString:: `utf8`
-  transform:: source, filename
+  buff = readFileSync filename
+  source = buff.toString 'utf8'
+  transform source, filename
 
 
 output_to_dir = fn {code, src_path, out_path, rel_path}:
-  dir = dirname:: out_path
+  dir = dirname out_path
   match false:
-    existsSync:: dir:
-      mkdirSync:: dir, {recursive: true}
-      warn:: `created ${dir}`
+    existsSync dir:
+      mkdirSync dir, {recursive: true}
+      warn 'created ${dir}'
 
-  writeFileSync:: out_path, code
+  writeFileSync out_path, code
 
-  warn:: `compiled ${src_path} -> ${out_path}`
+  warn 'compiled ${src_path} -> ${out_path}'
   out_path
 
 
 output_code = fn {stdout}, item:
   match item.out_path:
-    null: stdout.write:: `${item.code}\n`
-    else: output_to_dir:: item
-
+    null: stdout.write '${item.code}\n'
+    else: output_to_dir item
+  item
 
 add_source_map_inline = fn {code, map: source_map}:
-  converter = convert_source_map.fromObject:: source_map
+  converter = convert_source_map.fromObject source_map
   comment = converter.toComment()
   '${code}\n${comment}'
 
 
 compile_all = fn proc, src, out_dir=null, ignore=null, source_maps=false:
-  files = get_files:: src, out_dir, ignore
+  files = get_files src, out_dir, ignore
 
-  processed = pipe files:
+  pipe files:
     map {src_path, out_path, rel_path}:
-      compiled = compile:: src_path
+      compiled = compile src_path
 
-      code = match source_maps:
-        'inline': add_source_map_inline:: compiled
-        else: compiled.code
+      match compiled:
+        {errors: {length: ? > 0}}:
+          {errors} = compiled
+          {src_path, out_path, rel_path, errors}
 
-      {code, src_path, out_path, rel_path}
+        else:
+          code = match source_maps:
+            'inline': add_source_map_inline compiled
+            else: compiled.code
 
-    map item:
-      output_code:: proc, item
+          item = {src_path, out_path, rel_path, code}
+          output_code proc, item
 
-    fold item, cntr=0:
-      cntr + 1
-
-  warn:: `\nprocessed ${processed} file(s)`
