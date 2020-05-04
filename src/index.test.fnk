@@ -8,10 +8,12 @@ jest.mock './compile', fn:
     compile_all: mock_fn fn: [{ errors: []}]
 
 
+mock_warn = mock_fn()
+
 jest.mock './logging', fn:
   dict:
     logger: fn: dict:
-      warn: mock_fn()
+      warn: mock_warn
       error: mock_fn()
 
 
@@ -72,6 +74,11 @@ describe main, fn:
       compile_all
       was_called_with proc, ['./src'], null, './src/*.test.*', 'inline'
 
+    expect
+      mock_warn
+      was_called_with '\nprocessed 1 file(s)'
+
+
 
   it 'handles errors', fn:
     compile_all.mockImplementation fn:
@@ -86,3 +93,7 @@ describe main, fn:
     expect
       proc.exit
       was_called_with error_exit_code
+
+    expect
+      mock_warn
+      was_called_with '\nprocessed 1 file(s)'

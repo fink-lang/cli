@@ -16,7 +16,7 @@ handle_compile = fn process, argv:
     argv.ignore, argv.'source-maps'
 
   {processed, errors} = pipe compilation:
-    fold item, {processed, errors}={processes: 0, errors: 0}:
+    fold item, {processed, errors}={processed: 0, errors: 0}:
 
       match item:
         {errors: {length: ? > 0}}:
