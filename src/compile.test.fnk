@@ -1,73 +1,90 @@
-{rmdirSync} = import `fs`
+{rmdirSync, writeFileSync} = import 'fs'
 
-{describe, it, expect, mock_fn, mock, to_match_snapshot, to_be_called_with} = import `@fink/jest`
-
-
-jest.mock:: `@fink/loxia`, fn:
-  {
-    generate: mock_fn:: fn:
-      {
-        code: `test-code`,
-        map: `test-map`
-      }
-  }
-
-jest.mock:: `./logging`, fn:
-  {
-   logger: fn: {warn: mock_fn()}
-  }
-
-{readdirSync, statSync} = import `fs`
-
-{compile_all} = import `./compile`
+{describe, it, expect, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest'
 
 
-describe:: compile_all, fn:
+jest.mock '@fink/loxia', fn:
+  dict:
+    generate: mock_fn fn:
+      dict:
+        code: 'test-code',
+        map: 'test-map'
 
-  it:: `compiles file to stdout`, fn:
+
+jest.mock './logging', fn:
+  dict:
+    logger: fn: dict:
+      warn: mock_fn()
+      error: mock_fn()
+
+
+{readdirSync, statSync} = import 'fs'
+
+{compile_all} = import './compile'
+
+
+describe compile_all, fn:
+
+  it 'compiles file to stdout', fn:
     stdout = {write: mock_fn()}
 
-    compile_all:: {stdout}, [`./src/compile.test.fnk`]
+    [...result] = compile_all {stdout}, ['./src/compile.test.fnk']
 
-    expect::
+    expect
       stdout.write
-      to_be_called_with `test-code\n`
+      was_called_with 'test-code\n'
 
 
-  it:: `compiles files to out-dir`, fn:
+  it 'compiles files to out-dir', fn:
     stdout = {write: mock_fn()}
-    rmdirSync:: `./build/test`, {recursive: true}
+    rmdirSync './build/test', {recursive: true}
 
-    compile_all:: {stdout}, [`./src`], `./build/test`
+    [...result] = compile_all {stdout}, ['./src'], './build/test'
 
-    files = readdirSync:: `./build/test`
+    files = readdirSync './build/test'
 
-    expect::
+    expect
        files
        to_match_snapshot
 
 
-  it:: `ignores files`, fn:
+  it 'ignores files', fn:
     stdout = {write: mock_fn()}
-    rmdirSync:: `./build/test`, {recursive: true}
+    rmdirSync './build/test', {recursive: true}
 
-    compile_all:: {stdout}, [`./src`], `./build/test`, `./src/*.test.fnk`
+    [...result] = compile_all {stdout}, ['./src'], './build/test', './src/*.test.fnk'
 
-    files = readdirSync:: `./build/test`
+    files = readdirSync './build/test'
 
-    expect::
+    expect
        files
        to_match_snapshot
 
 
-  it:: `compiles file with inline source-maps`, fn:
+  it 'compiles file with inline source-maps', fn:
     stdout = {write: mock_fn()}
 
-    compile_all:: {stdout}, [`./src/compile.test.fnk`], null, null, 'inline'
+    [...result] = compile_all {stdout}, ['./src/compile.test.fnk'], null, null, 'inline'
 
-    expect::
+    expect
       stdout.write
-      to_be_called_with `
+      was_called_with '
         test-code
         //# sourceMappingURL=data:application/json;charset=utf-8;base64,InRlc3QtbWFwIg==
-      `
+      '
+
+  it 'handles parse errors', fn:
+    stdout = {write: mock_fn()}
+    writeFileSync './build/test-file.fnk', 'foo bar ['
+
+    {errors} = pipe compile_all {stdout}, ['./build/test-file.fnk']:
+      find {errors}:
+        match errors:
+          []: true
+          else: false
+
+    expect
+      errors.length
+      to_equal 1
+
+

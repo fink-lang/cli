@@ -1,51 +1,70 @@
-{yargs, config, option, usage, version, help} = import `./yargs`
+{yargs, config, option, usage, version, help} = import './yargs'
 
-{compile_all} = import `./compile`
-{logger} = import `./logging`
+{compile_all} = import './compile'
+{logger} = import './logging'
 
-{error} = logger()
+{warn, error} = logger()
+
+
+error_exit_code = -1
+
+
+handle_compile = fn process, argv:
+  compilation = compile_all
+    process
+    argv.src, argv.'out-dir',
+    argv.ignore, argv.'source-maps'
+
+  {processed, errors} = pipe compilation:
+    fold item, {processed, errors}={processes: 0, errors: 0}:
+
+      match item:
+        {errors: {length: ? > 0}}:
+          {errors: [{error: err, stack}]} = item
+          error err, stack
+          {processed: processed + 1, errors: errors + 1}
+
+        else:
+          {processed: processed + 1, errors}
+
+  warn '\nprocessed ${processed} file(s)'
+
+  match errors:
+    ? > 0: process.exit error_exit_code
+
 
 
 main = fn process:
   [,, ...args] = process.argv
 
-  {argv} = pipe yargs:: args:
-    config:: {`camel-case-expansion`: false}
-    version:: false
+  {argv} = pipe yargs args:
+    config {'camel-case-expansion': false}
+    version false
 
-    usage:: `$0 --src file-or-dir [...] [--out-dir ouput-dir]`
+    usage '$0 --src file-or-dir [...] [--out-dir ouput-dir]'
 
-    option:: `src`, {
-        array: true,
-        describe: `The directory containing files to compile.`
-      }
+    option 'src', dict:
+        array: true
+        describe: 'The directory containing files to compile.'
 
-    option:: `out-dir`, {
-        describe: `The directory to generate code in.`,
+    option 'out-dir', dict:
+        describe: 'The directory to generate code in.'
         default: null
-      }
 
-    option:: `ignore`, {
-        describe: `Glob paths/patterns for files to ignore`,
+    option 'ignore', dict:
+        describe: 'Glob paths/patterns for files to ignore'
         default: null
-      }
 
-    option:: `source-maps`, {
-        describe: `Generate sourcemaps`,
+    option 'source-maps', dict:
+        describe: 'Generate sourcemaps'
         default: false
-      }
 
     help()
 
-  [err] = attempt:
-    compile_all:: process, argv.src, argv.`out-dir`, argv.ignore, argv.`source-maps`
+  handle_compile process, argv
 
-  match true:
-    err != null:
-      error:: err
-      process.exit:: -1
 
 
 match require.main:
   # istanbul ignore next
-  module: main:: process
+  module: main process

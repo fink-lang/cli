@@ -1,48 +1,47 @@
-{describe, it, expect, to_equal, to_match_snapshot} = import `@fink/jest`
+{describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest'
 
-{walk, expand_source, get_files} = import `./files`
+{walk, expand_source, get_files} = import './files'
 
 
-describe:: get_files, fn:
+describe get_files, fn:
 
-  it:: `gets single file`, fn:
-    [...files] = get_files:: [`./src/files.test.fnk`], `./build/`
+  it 'gets single file', fn:
+    [...files] = get_files ['./src/files.test.fnk'], './build/'
 
-    expect::
+    expect
       files
-      to_equal::
-        list: {
-          src_path: `src/files.test.fnk`,
-          out_path: `build/files.test.js`,
-          rel_path: `files.test.fnk`
-        }
+      to_equal
+        list: dict:
+          src_path: 'src/files.test.fnk',
+          out_path: 'build/files.test.js',
+          rel_path: 'files.test.fnk'
 
 
-  it:: `gets single file no putput`, fn:
-    [...files] = get_files:: [`./src/files.test.fnk`], null
 
-    expect::
+  it 'gets single file no putput', fn:
+    [...files] = get_files ['./src/files.test.fnk'], null
+
+    expect
       files
-      to_equal::
-        list: {
-          src_path: `src/files.test.fnk`,
+      to_equal
+        list: dict:
+          src_path: 'src/files.test.fnk',
           out_path: null,
-          rel_path: `files.test.fnk`
-        }
+          rel_path: 'files.test.fnk'
 
 
-  it:: `ignores files`, fn:
-    [...files] = get_files:: [`./src/files.test.fnk`], null, `./src/*.test.fnk`
+  it 'ignores files', fn:
+    [...files] = get_files ['./src/files.test.fnk'], null, './src/*.test.fnk'
 
-    expect::
+    expect
       files
-      to_equal:: []
+      to_equal []
 
 
-  it:: `gets files from dir`, fn:
-    [...files] = get_files:: [`./src`], `./build/test`
+  it 'gets files from dir', fn:
+    [...files] = get_files ['./src'], './build/test'
 
-    expect::
+    expect
       files
       to_match_snapshot
 

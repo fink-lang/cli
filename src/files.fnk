@@ -1,51 +1,52 @@
-{readdirSync, statSync} = import `fs`
-{join, dirname, basename, relative, resolve} = import `path`
-minimatch = import `minimatch`
+{readdirSync, statSync} = import 'fs'
+{join, dirname, basename, relative, resolve} = import 'path'
+minimatch = import 'minimatch'
 
 
 walk = fn dir:
-  pipe readdirSync:: dir, {withFileTypes: true}:
+  pipe readdirSync dir, {withFileTypes: true}:
     map entry:
       files = match true:
         entry.isDirectory():
-          walk:: join:: dir, entry.name
-        else: [join:: dir, entry.name]
+          walk join dir, entry.name
+        else: [join dir, entry.name]
 
       ...files
 
+
 expand_source = fn file_or_dir:
-  stat = statSync:: file_or_dir
+  stat = statSync file_or_dir
 
   match true:
     stat.isDirectory():
-      pipe walk:: file_or_dir:
+      pipe walk file_or_dir:
         map src_path:
           {src_path, src_dir: file_or_dir}
     else:
-      src_dir = dirname:: file_or_dir
+      src_dir = dirname file_or_dir
       [{src_path: join(file_or_dir), src_dir}]
 
 
 get_files = fn sources, out_dir, ignore=null:
   pipe sources:
     map source:
-      ...expand_source:: source
+      ...expand_source source
 
     filter {src_path}:
-      src_path.endsWith:: `.fnk`
+      src_path.endsWith '.fnk'
 
     filter {src_path}:
       match ignore:
         null: true
-        else: !minimatch:: src_path, join:: ignore
+        else: !minimatch src_path, join ignore
 
     map {src_path, src_dir}:
-      rel_path = relative:: src_dir, src_path
-      rel_dir = dirname:: rel_path
-      name = basename:: src_path, `.fnk`
+      rel_path = relative src_dir, src_path
+      rel_dir = dirname rel_path
+      name = basename src_path, '.fnk'
 
       out_path = match out_dir:
         null: null
-        else: join:: out_dir, rel_dir, `${name}.js`
+        else: join out_dir, rel_dir, '${name}.js'
 
       {src_path, out_path, rel_path}

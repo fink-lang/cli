@@ -1,83 +1,88 @@
-{readdirSync, statSync} = import `fs`
+{readdirSync, statSync} = import 'fs'
 
-{describe, it, expect, mock_fn, to_be_called_with, to_throw} = import `@fink/jest`
-
-
-jest.mock:: `./compile`, fn:
-  {
-    compile_all: mock_fn:: fn: null
-  }
-
-jest.mock:: `./logging`, fn:
-  {
-   logger: fn: {error: mock_fn()}
-  }
+{describe, it, expect, mock_fn, was_called_with, to_throw} = import '@fink/jest'
 
 
-{compile_all} = import `./compile`
-{main} = import `./index`
+jest.mock './compile', fn:
+  dict:
+    compile_all: mock_fn fn: [{ errors: []}]
 
 
-describe:: main, fn:
+jest.mock './logging', fn:
+  dict:
+    logger: fn: dict:
+      warn: mock_fn()
+      error: mock_fn()
 
-  it:: `compiles file without out-dir`, fn:
-    proc = {argv: [null, null, `--src`, `./src/index.fnk`]}
 
-    main:: proc
+{compile_all} = import './compile'
+{main, error_exit_code} = import './index'
 
-    expect::
+
+describe main, fn:
+
+  it 'compiles file without out-dir', fn:
+    proc = dict:
+      exit: mock_fn()
+      argv: [null, null, '--src', './src/index.fnk']
+
+    main proc
+
+    expect
       compile_all
-      to_be_called_with:: proc, [`./src/index.fnk`], null, null, false
+      was_called_with proc, ['./src/index.fnk'], null, null, false
 
 
-  it:: `compiles dir to out-dir`, fn:
-    proc = {argv: [null, null, `--src`, `./src`, `--out-dir`, `./build/test`]}
+  it 'compiles dir to out-dir', fn:
+    proc = dict:
+      exit: mock_fn()
+      argv: [null, null, '--src', './src', '--out-dir', './build/test']
 
-    main:: proc
+    main proc
 
-    expect::
+    expect
       compile_all
-      to_be_called_with:: proc, [`./src`], `./build/test`, null, false
+      was_called_with proc, ['./src'], './build/test', null, false
 
 
-  it:: `ignores files`, fn:
-    proc = {argv: [null, null, `--src`, `./src`, `--ignore`, `./src/*.test.*`]}
+  it 'ignores files', fn:
+    proc = dict:
+      exit: mock_fn()
+      argv: [null, null, '--src', './src', '--ignore', './src/*.test.*']
 
-    main:: proc
+    main proc
 
-    expect::
+    expect
       compile_all
-      to_be_called_with:: proc, [`./src`], null, `./src/*.test.*`, false
+      was_called_with proc, ['./src'], null, './src/*.test.*', false
 
 
-  it:: `compiles with source maps`, fn:
-    proc = {
-      argv: [
+  it 'compiles with source maps', fn:
+    proc = dict:
+      exit: mock_fn()
+      argv: list:
         null, null,
-        `--src`, `./src`,
-        `--ignore`, `./src/*.test.*`,
+        '--src', './src',
+        '--ignore', './src/*.test.*',
         '--source-maps', 'inline'
-      ]
-    }
 
-    main:: proc
+    main proc
 
-    expect::
+    expect
       compile_all
-      to_be_called_with:: proc, [`./src`], null, `./src/*.test.*`, 'inline'
+      was_called_with proc, ['./src'], null, './src/*.test.*', 'inline'
 
 
-  it:: `handles errors`, fn:
-    compile_all.mockImplementation:: fn: null()
-    proc = {
-      argv: [null, null, `--src`, `./src`, `--ignore`, `./src/*.test.*`],
-      exit: mock_fn:: null
-    }
+  it 'handles errors', fn:
+    compile_all.mockImplementation fn:
+      [{errors: [{error: 'test-error', stack: 'test-stack'}]}]
 
-    main:: proc
+    proc = dict:
+      argv: [null, null, '--src', './src', '--ignore', './src/*.test.*'],
+      exit: mock_fn()
 
-    expect::
+    main proc
+
+    expect
       proc.exit
-      to_be_called_with:: -1
-
-
+      was_called_with error_exit_code
