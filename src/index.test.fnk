@@ -32,7 +32,10 @@ describe main, fn:
 
     expect
       compile_all
-      was_called_with proc, ['./src/index.fnk'], null, null, false
+      was_called_with
+        proc
+        ['./src/index.fnk'], null, null
+        {source_maps: false, module_type: 'cjs'}
 
 
   it 'compiles dir to out-dir', fn:
@@ -44,7 +47,10 @@ describe main, fn:
 
     expect
       compile_all
-      was_called_with proc, ['./src'], './build/test', null, false
+      was_called_with
+        proc
+        ['./src'], './build/test', null
+        {source_maps: false, module_type: 'cjs'}
 
 
   it 'ignores files', fn:
@@ -56,7 +62,10 @@ describe main, fn:
 
     expect
       compile_all
-      was_called_with proc, ['./src'], null, './src/*.test.*', false
+      was_called_with
+        proc
+        ['./src'], null, './src/*.test.*'
+        {source_maps: false, module_type: 'cjs'}
 
 
   it 'compiles with source maps', fn:
@@ -72,12 +81,37 @@ describe main, fn:
 
     expect
       compile_all
-      was_called_with proc, ['./src'], null, './src/*.test.*', 'inline'
+      was_called_with
+        proc
+        ['./src'], null, './src/*.test.*'
+        {source_maps: 'inline', module_type: 'cjs'}
 
     expect
       mock_warn
       was_called_with '\nprocessed 1 file(s)'
 
+
+  it 'compiles as es6 module', fn:
+    proc = dict:
+      exit: mock_fn()
+      argv: list:
+        null, null,
+        '--src', './src',
+        '--ignore', './src/*.test.*',
+        '--module-type', 'mjs'
+
+    main proc
+
+    expect
+      compile_all
+      was_called_with
+        proc
+        ['./src'], null, './src/*.test.*'
+        {source_maps: false, module_type: 'mjs'}
+
+    expect
+      mock_warn
+      was_called_with '\nprocessed 1 file(s)'
 
 
   it 'handles errors', fn:

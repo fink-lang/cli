@@ -3,14 +3,6 @@
 {describe, it, expect, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest'
 
 
-jest.mock '@fink/loxia', fn:
-  dict:
-    generate: mock_fn fn:
-      dict:
-        code: 'test-code',
-        map: 'test-map'
-
-
 jest.mock './logging', fn:
   dict:
     logger: fn: dict:
@@ -18,22 +10,12 @@ jest.mock './logging', fn:
       error: mock_fn()
 
 
-{readdirSync, statSync} = import 'fs'
+{readdirSync} = import 'fs'
 
 {compile_all} = import './compile'
 
 
 describe compile_all, fn:
-
-  it 'compiles file to stdout', fn:
-    stdout = {write: mock_fn()}
-
-    [...result] = compile_all {stdout}, ['./src/compile.test.fnk']
-
-    expect
-      stdout.write
-      was_called_with 'test-code\n'
-
 
   it 'compiles files to out-dir', fn:
     stdout = {write: mock_fn()}
@@ -52,7 +34,9 @@ describe compile_all, fn:
     stdout = {write: mock_fn()}
     rmdirSync './build/test', {recursive: true}
 
-    [...result] = compile_all {stdout}, ['./src'], './build/test', './src/*.test.fnk'
+    [...result] = compile_all
+      {stdout}
+      ['./src'], './build/test', './src/*.test.fnk'
 
     files = readdirSync './build/test'
 
@@ -61,17 +45,75 @@ describe compile_all, fn:
        to_match_snapshot
 
 
-  it 'compiles file with inline source-maps', fn:
+  it 'compiles as es6 module with inline source-maps to stdout', fn:
     stdout = {write: mock_fn()}
+    writeFileSync
+      './build/test-file.fnk'
+      `
+        {foo} = import '@fink/test'
+        bar = foo * 2
+      `
 
-    [...result] = compile_all {stdout}, ['./src/compile.test.fnk'], null, null, 'inline'
+    [...result] = compile_all
+      {stdout}
+      ['./build/test-file.fnk'], null, null
+      {source_maps: 'inline'}
 
     expect
       stdout.write
       was_called_with '
-        test-code
-        //# sourceMappingURL=data:application/json;charset=utf-8;base64,InRlc3QtbWFwIg==
+        import { foo } from "@fink/test";
+        export const bar = foo * 2;
+        //# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImJ1aWxkL3Rlc3QtZmlsZS5mbmsiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsU0FBQyxHQUFEO0FBQ0EsYUFBQSxHQUFHLEdBQUcsR0FBRyxHQUFHLENBQVoiLCJzb3VyY2VzQ29udGVudCI6WyJ7Zm9vfSA9IGltcG9ydCAnQGZpbmsvdGVzdCdcbmJhciA9IGZvbyAqIDJcbiJdfQ==
       '
+
+
+  it 'compiles as es6 module without source-maps to stdout', fn:
+    stdout = {write: mock_fn()}
+    writeFileSync
+      './build/test-file.fnk'
+      `
+        {foo} = import '@fink/test'
+        bar = foo * 2
+      `
+
+    [...result] = compile_all
+      {stdout}
+      ['./build/test-file.fnk'], null, null
+      {source_maps: false}
+
+    expect
+      stdout.write
+      was_called_with '
+        import { foo } from "@fink/test";
+        export const bar = foo * 2;
+      '
+
+  it 'compiles as cjs module without source-maps to stdout', fn:
+    stdout = {write: mock_fn()}
+    writeFileSync
+      './build/test-file.fnk'
+      `
+        {foo} = import '@fink/test'
+        bar = foo * 2
+      `
+
+    [...result] = compile_all
+      {stdout}
+      ['./build/test-file.fnk'], null, null
+      {source_maps: false, module_type: 'cjs'}
+
+    expect
+      stdout.write
+      was_called_with `
+        const {
+          foo
+        } = require("@fink/test");
+
+        const bar = foo * 2;
+        exports.bar = bar;
+      `
+
 
   it 'handles parse errors', fn:
     stdout = {write: mock_fn()}
