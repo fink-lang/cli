@@ -12,23 +12,28 @@ convert_source_map = import 'convert-source-map'
 {warn} = logger()
 
 
-transform = fn source, filename:
+transform = fn source, filename, options:
   ast = parse source, filename
 
   match ast:
     {errors: [{}]}:
       {errors: ast.errors}
     else:
-      generate ast, filename, source
+      generate
+        ast, filename, source
+        dict:
+          use_babel_conf: false
+          ...options
 
 
-compile = fn filename:
+
+compile = fn filename, options:
   buff = readFileSync filename
   source = buff.toString 'utf8'
-  transform source, filename
+  transform source, filename, options
 
 
-output_to_dir = fn {code, src_path, out_path, rel_path}:
+output_to_dir = fn {code, src_path, out_path}:
   dir = dirname out_path
   match false:
     existsSync dir:
@@ -47,29 +52,21 @@ output_code = fn {stdout}, item:
     else: output_to_dir item
   item
 
-add_source_map_inline = fn {code, map: source_map}:
-  converter = convert_source_map.fromObject source_map
-  comment = converter.toComment()
-  '${code}\n${comment}'
 
-
-compile_all = fn proc, src, out_dir=null, ignore=null, source_maps=false:
+compile_all = fn proc, src, out_dir=null, ignore=null, options={}:
   files = get_files src, out_dir, ignore
 
   pipe files:
     map {src_path, out_path, rel_path}:
-      compiled = compile src_path
+      compiled = compile src_path, options
 
       match compiled:
-        {errors: {length: ? > 0}}:
+        {errors: [{}]}:
           {errors} = compiled
           {src_path, out_path, rel_path, errors}
 
         else:
-          code = match source_maps:
-            'inline': add_source_map_inline compiled
-            else: compiled.code
-
+          {code} = compiled
           item = {src_path, out_path, rel_path, code}
           output_code proc, item
 

@@ -12,14 +12,16 @@ error_exit_code = -1
 handle_compile = fn process, argv:
   compilation = compile_all
     process
-    argv.src, argv.'out-dir',
-    argv.ignore, argv.'source-maps'
+    argv.src, argv.'out-dir', argv.ignore
+    dict:
+      source_maps: argv.'source-maps'
+      module_type: argv.'module-type'
 
   {processed, errors} = pipe compilation:
     fold item, {processed=0, errors=0}={}:
 
       match item:
-        {errors: {length: ? > 0}}:
+        {errors: [{}]}:
           {errors: [{error: err, stack}]} = item
           error err, stack
           {processed: processed + 1, errors: errors + 1}
@@ -58,6 +60,11 @@ main = fn process:
     option 'source-maps', dict:
         describe: 'Generate sourcemaps'
         default: false
+
+    option 'module-type', dict:
+        describe: 'Type of modules to generate (cjs|mjs)'
+        choices: ['cjs', 'mjs']
+        default: 'cjs'
 
     help()
 
