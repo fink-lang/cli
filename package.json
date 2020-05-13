@@ -4,7 +4,7 @@
   "description": "CLI for compiling fink to JS",
   "license": "MIT",
   "engines": {
-    "node": ">=13.0.0"
+    "node": ">=14.0.0"
   },
   "private": false,
   "publishConfig": {
@@ -40,13 +40,13 @@
   },
   "peerDependencies": {
     "@fink/loxia": ">=7.0.0",
-    "@fink/larix": ">=8.0.0"
+    "@fink/larix": ">=9.0.0"
   },
   "devDependencies": {
     "@fink/cli": "^4.0.1",
     "@fink/jest": "^4.0.0",
-    "@fink/larix": "^8.0.0",
-    "@fink/loxia": "^7.1.0",
+    "@fink/larix": "^9.0.0",
+    "@fink/loxia": "^7.4.0",
     "commitizen": "^4.1.0",
     "cz-conventional-changelog": "^3.2.0",
     "jest-cli": "^26.0.0",

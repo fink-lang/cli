@@ -13,13 +13,13 @@ convert_source_map = import 'convert-source-map'
 
 
 transform = fn source, filename:
-  [ast, {errors}] = parse source, filename
+  ast = parse source, filename
 
-  match errors:
-    {length: 0}:
-      generate ast, filename, source
+  match ast:
+    {errors: [{}]}:
+      {errors: ast.errors}
     else:
-      {errors}
+      generate ast, filename, source
 
 
 compile = fn filename:
