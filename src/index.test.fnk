@@ -1,6 +1,4 @@
-{readdirSync, statSync} = import 'fs'
-
-{describe, it, expect, mock_fn, was_called_with, to_throw} = import '@fink/jest'
+{describe, it, expect, mock_fn, was_called_with} = import '@fink/jest'
 
 
 jest.mock './compile', fn:
