@@ -1,6 +1,6 @@
 {describe, it, expect, to_equal, to_match_snapshot} = import '@fink/jest'
 
-{walk, expand_source, get_files} = import './files'
+{get_files} = import './files'
 
 
 describe get_files, fn:

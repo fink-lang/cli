@@ -4,8 +4,6 @@
 {parse} = import '@fink/larix'
 {generate} = import '@fink/loxia'
 
-convert_source_map = import 'convert-source-map'
-
 {get_files} = import './files'
 {logger} = import './logging'
 

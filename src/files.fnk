@@ -1,5 +1,5 @@
 {readdirSync, statSync} = import 'fs'
-{join, dirname, basename, relative, resolve} = import 'path'
+{join, dirname, basename, relative} = import 'path'
 minimatch = import 'minimatch'
 
 
