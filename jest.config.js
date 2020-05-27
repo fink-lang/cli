@@ -14,9 +14,9 @@ module.exports = {
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
   watchPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 
-  // snapshotResolver: '@fink/jest/snapshot-resolver',
+  snapshotResolver: '@fink/jest/snapshot-resolver',
 
-  timers: 'fake',
+  timers: 'modern',
 
   clearMocks: true,
   resetMocks: false,

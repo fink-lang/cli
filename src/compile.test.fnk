@@ -1,6 +1,6 @@
 {rmdirSync, writeFileSync} = import 'fs'
-
 {describe, it, expect, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest'
+{length} = import '@fink/std-lib/iter'
 
 
 jest.mock './logging', fn:
@@ -8,7 +8,6 @@ jest.mock './logging', fn:
     logger: fn: dict:
       warn: mock_fn()
       error: mock_fn()
-
 
 {readdirSync} = import 'fs'
 
@@ -26,6 +25,10 @@ describe compile_all, fn:
     files = readdirSync './build/test'
 
     expect
+      length result
+      to_equal 9
+
+    expect
        files
        to_match_snapshot
 
@@ -39,6 +42,10 @@ describe compile_all, fn:
       ['./src'], './build/test', './src/*.test.fnk'
 
     files = readdirSync './build/test'
+
+    expect
+      length result
+      to_equal 5
 
     expect
        files
@@ -56,16 +63,16 @@ describe compile_all, fn:
 
     [...result] = compile_all
       {stdout}
-      ['./build/test-file.fnk'], null, null
+      ['./build/test-file.fnk'], false, false
       {source_maps: 'inline'}
 
     expect
-      stdout.write
-      was_called_with '
-        import { foo } from "@fink/test";
-        export const bar = foo * 2;
-        //# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImJ1aWxkL3Rlc3QtZmlsZS5mbmsiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsU0FBQyxHQUFEO0FBQ0EsYUFBQSxHQUFHLEdBQUcsR0FBRyxHQUFHLENBQVoiLCJzb3VyY2VzQ29udGVudCI6WyJ7Zm9vfSA9IGltcG9ydCAnQGZpbmsvdGVzdCdcbmJhciA9IGZvbyAqIDJcbiJdfQ==
-      '
+      length result
+      to_equal 1
+
+    expect
+      stdout.write.mock.calls
+      to_match_snapshot
 
 
   it 'compiles as es6 module without source-maps to stdout', fn:
@@ -79,8 +86,12 @@ describe compile_all, fn:
 
     [...result] = compile_all
       {stdout}
-      ['./build/test-file.fnk'], null, null
+      ['./build/test-file.fnk'], false, false
       {source_maps: false}
+
+    expect
+      length result
+      to_equal 1
 
     expect
       stdout.write
@@ -100,8 +111,12 @@ describe compile_all, fn:
 
     [...result] = compile_all
       {stdout}
-      ['./build/test-file.fnk'], null, null
+      ['./build/test-file.fnk'], false, false
       {source_maps: false, module_type: 'cjs'}
+
+    expect
+      length result
+      to_equal 1
 
     expect
       stdout.write
@@ -126,7 +141,7 @@ describe compile_all, fn:
           else: false
 
     expect
-      errors.length
+      length errors
       to_equal 1
 
 

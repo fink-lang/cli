@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compile_all compiles as es6 module with inline source-maps to stdout 1`] = `
+Array [
+  Array [
+    "import { foo } from \\"@fink/test\\";
+export const bar = foo * 2;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImJ1aWxkL3Rlc3QtZmlsZS5mbmsiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsU0FBQyxHQUFELFFBQWUsWUFBZjtBQUNBLGFBQUEsR0FBRyxHQUFHLEdBQUcsR0FBRyxDQUFaIiwic291cmNlc0NvbnRlbnQiOlsie2Zvb30gPSBpbXBvcnQgJ0BmaW5rL3Rlc3QnXG5iYXIgPSBmb28gKiAyXG4iXX0=
+",
+  ],
+]
+`;
+
+exports[`compile_all compiles files to out-dir 1`] = `
+Array [
+  "compile.js",
+  "compile.test.js",
+  "files.js",
+  "files.test.js",
+  "index.js",
+  "index.test.js",
+  "logging.js",
+  "logging.test.js",
+  "yargs.js",
+]
+`;
+
+exports[`compile_all ignores files 1`] = `
+Array [
+  "compile.js",
+  "files.js",
+  "index.js",
+  "logging.js",
+  "yargs.js",
+]
+`;
