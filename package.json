@@ -23,7 +23,6 @@
     "build:dir": "mkdir -p ./build/pkg/",
     "build:fnk": "fnk --src src --out-dir build/pkg --ignore 'src/**/*.test.fnk'",
     "build:files": "cp ./README.md ./LICENSE ./build/pkg/",
-    "build:main": "./scripts/prefix-main",
     "build:pkg": "./scripts/build-pkg-json",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
@@ -39,14 +38,14 @@
     }
   },
   "peerDependencies": {
-    "@fink/loxia": ">=8.0.0",
+    "@fink/loxia": ">=9.0.0",
     "@fink/larix": ">=9.0.0"
   },
   "devDependencies": {
     "@fink/cli": "^5.0.0",
     "@fink/jest": "^5.0.0",
-    "@fink/larix": "^9.0.0",
-    "@fink/loxia": "^8.0.1",
+    "@fink/larix": "^9.2.0",
+    "@fink/loxia": "^9.1.0",
     "commitizen": "^4.1.0",
     "cz-conventional-changelog": "^3.2.0",
     "jest-cli": "^26.0.0",
@@ -55,6 +54,7 @@
   },
   "dependencies": {
     "minimatch": "^3.0.4",
-    "yargs": "^15.3.1"
+    "yargs": "^15.3.1",
+    "@fink/std-lib": "^2.0.0"
   }
 }

@@ -17,21 +17,20 @@ describe get_files, fn:
           rel_path: 'files.test.fnk'
 
 
-
   it 'gets single file no putput', fn:
-    [...files] = get_files ['./src/files.test.fnk'], null
+    [...files] = get_files ['./src/files.test.fnk'], false
 
     expect
       files
       to_equal
         list: dict:
           src_path: 'src/files.test.fnk',
-          out_path: null,
+          out_path: false,
           rel_path: 'files.test.fnk'
 
 
   it 'ignores files', fn:
-    [...files] = get_files ['./src/files.test.fnk'], null, './src/*.test.fnk'
+    [...files] = get_files ['./src/files.test.fnk'], false, './src/*.test.fnk'
 
     expect
       files
@@ -39,7 +38,7 @@ describe get_files, fn:
 
 
   it 'gets files from dir', fn:
-    [...files] = get_files ['./src'], './build/test'
+    [...files] = get_files ['.'], './build/test'
 
     expect
       files

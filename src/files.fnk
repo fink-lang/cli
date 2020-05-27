@@ -1,44 +1,45 @@
 {readdirSync, statSync} = import 'fs'
 {join, dirname, basename, relative} = import 'path'
 minimatch = import 'minimatch'
+{ends_with} = import '@fink/std-lib/str'
 
 
 walk = fn dir:
   pipe readdirSync dir, {withFileTypes: true}:
     map entry:
-      files = match true:
-        entry.isDirectory():
-          walk join dir, entry.name
-        else: [join dir, entry.name]
+      path = join dir, entry.name
 
+      files = match entry:
+        ?.isDirectory(): walk path
+        else: [path]
       ...files
 
 
 expand_source = fn file_or_dir:
   stat = statSync file_or_dir
 
-  match true:
-    stat.isDirectory():
+  match stat:
+    ?.isDirectory():
       pipe walk file_or_dir:
         map src_path:
           {src_path, src_dir: file_or_dir}
     else:
       src_dir = dirname file_or_dir
-      [{src_path: join(file_or_dir), src_dir}]
+      [{src_path: (join file_or_dir), src_dir}]
 
 
-get_files = fn sources, out_dir, ignore=null:
+get_files = fn sources, out_dir, ignore=false:
   pipe sources:
     map source:
       ...expand_source source
 
     filter {src_path}:
-      src_path.endsWith '.fnk'
+      ends_with src_path, '.fnk'
 
     filter {src_path}:
       match ignore:
-        null: true
-        else: !minimatch src_path, join ignore
+        false: true
+        else: not minimatch src_path, join ignore
 
     map {src_path, src_dir}:
       rel_path = relative src_dir, src_path
@@ -46,7 +47,7 @@ get_files = fn sources, out_dir, ignore=null:
       name = basename src_path, '.fnk'
 
       out_path = match out_dir:
-        null: null
+        false: false
         else: join out_dir, rel_dir, '${name}.js'
 
       {src_path, out_path, rel_path}

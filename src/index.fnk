@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 {yargs, config, option, usage, version, help} = import './yargs'
 
 {compile_all} = import './compile'
@@ -51,11 +52,11 @@ main = fn process:
 
     option 'out-dir', dict:
         describe: 'The directory to generate code in.'
-        default: null
+        default: false
 
     option 'ignore', dict:
         describe: 'Glob paths/patterns for files to ignore'
-        default: null
+        default: false
 
     option 'source-maps', dict:
         describe: 'Generate sourcemaps'
@@ -69,7 +70,6 @@ main = fn process:
     help()
 
   handle_compile process, argv
-
 
 
 match require.main:

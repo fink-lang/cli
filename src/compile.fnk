@@ -3,6 +3,7 @@
 
 {parse} = import '@fink/larix'
 {generate} = import '@fink/loxia'
+{decode} = import '@fink/std-lib/str'
 
 {get_files} = import './files'
 {logger} = import './logging'
@@ -27,7 +28,7 @@ transform = fn source, filename, options:
 
 compile = fn filename, options:
   buff = readFileSync filename
-  source = buff.toString 'utf8'
+  source = decode buff, 'utf-8'
   transform source, filename, options
 
 
@@ -46,12 +47,12 @@ output_to_dir = fn {code, src_path, out_path}:
 
 output_code = fn {stdout}, item:
   match item.out_path:
-    null: stdout.write '${item.code}\n'
+    false: stdout.write '${item.code}\n'
     else: output_to_dir item
   item
 
 
-compile_all = fn proc, src, out_dir=null, ignore=null, options={}:
+compile_all = fn proc, src, out_dir=false, ignore=false, options={}:
   files = get_files src, out_dir, ignore
 
   pipe files:

@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get_files gets files from dir 1`] = `
+Array [
+  Object {
+    "out_path": "build/test/build/test-file.js",
+    "rel_path": "build/test-file.fnk",
+    "src_path": "build/test-file.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/compile.js",
+    "rel_path": "src/compile.fnk",
+    "src_path": "src/compile.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/compile.test.js",
+    "rel_path": "src/compile.test.fnk",
+    "src_path": "src/compile.test.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/files.js",
+    "rel_path": "src/files.fnk",
+    "src_path": "src/files.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/files.test.js",
+    "rel_path": "src/files.test.fnk",
+    "src_path": "src/files.test.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/index.js",
+    "rel_path": "src/index.fnk",
+    "src_path": "src/index.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/index.test.js",
+    "rel_path": "src/index.test.fnk",
+    "src_path": "src/index.test.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/logging.js",
+    "rel_path": "src/logging.fnk",
+    "src_path": "src/logging.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/logging.test.js",
+    "rel_path": "src/logging.test.fnk",
+    "src_path": "src/logging.test.fnk",
+  },
+  Object {
+    "out_path": "build/test/src/yargs.js",
+    "rel_path": "src/yargs.fnk",
+    "src_path": "src/yargs.fnk",
+  },
+]
+`;

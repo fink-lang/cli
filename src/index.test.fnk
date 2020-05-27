@@ -24,7 +24,7 @@ describe main, fn:
   it 'compiles file without out-dir', fn:
     proc = dict:
       exit: mock_fn()
-      argv: [null, null, '--src', './src/index.fnk']
+      argv: ['node', 'fnk', '--src', './src/index.fnk']
 
     main proc
 
@@ -32,14 +32,14 @@ describe main, fn:
       compile_all
       was_called_with
         proc
-        ['./src/index.fnk'], null, null
+        ['./src/index.fnk'], false, false
         {source_maps: false, module_type: 'cjs'}
 
 
   it 'compiles dir to out-dir', fn:
     proc = dict:
       exit: mock_fn()
-      argv: [null, null, '--src', './src', '--out-dir', './build/test']
+      argv: ['node', 'fnk', '--src', './src', '--out-dir', './build/test']
 
     main proc
 
@@ -47,14 +47,14 @@ describe main, fn:
       compile_all
       was_called_with
         proc
-        ['./src'], './build/test', null
+        ['./src'], './build/test', false
         {source_maps: false, module_type: 'cjs'}
 
 
   it 'ignores files', fn:
     proc = dict:
       exit: mock_fn()
-      argv: [null, null, '--src', './src', '--ignore', './src/*.test.*']
+      argv: ['node', 'fnk', '--src', './src', '--ignore', './src/*.test.*']
 
     main proc
 
@@ -62,7 +62,7 @@ describe main, fn:
       compile_all
       was_called_with
         proc
-        ['./src'], null, './src/*.test.*'
+        ['./src'], false, './src/*.test.*'
         {source_maps: false, module_type: 'cjs'}
 
 
@@ -70,9 +70,9 @@ describe main, fn:
     proc = dict:
       exit: mock_fn()
       argv: list:
-        null, null,
-        '--src', './src',
-        '--ignore', './src/*.test.*',
+        'node', 'fnk'
+        '--src', './src'
+        '--ignore', './src/*.test.*'
         '--source-maps', 'inline'
 
     main proc
@@ -81,7 +81,7 @@ describe main, fn:
       compile_all
       was_called_with
         proc
-        ['./src'], null, './src/*.test.*'
+        ['./src'], false, './src/*.test.*'
         {source_maps: 'inline', module_type: 'cjs'}
 
     expect
@@ -93,9 +93,9 @@ describe main, fn:
     proc = dict:
       exit: mock_fn()
       argv: list:
-        null, null,
-        '--src', './src',
-        '--ignore', './src/*.test.*',
+        'node', 'fnk'
+        '--src', './src'
+        '--ignore', './src/*.test.*'
         '--module-type', 'mjs'
 
     main proc
@@ -104,7 +104,7 @@ describe main, fn:
       compile_all
       was_called_with
         proc
-        ['./src'], null, './src/*.test.*'
+        ['./src'], false, './src/*.test.*'
         {source_maps: false, module_type: 'mjs'}
 
     expect
@@ -117,7 +117,7 @@ describe main, fn:
       [{errors: [{error: 'test-error', stack: 'test-stack'}]}]
 
     proc = dict:
-      argv: [null, null, '--src', './src', '--ignore', './src/*.test.*'],
+      argv: ['node', 'fnk', '--src', './src', '--ignore', './src/*.test.*'],
       exit: mock_fn()
 
     main proc
