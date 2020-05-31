@@ -1,18 +1,18 @@
-{describe, it, expect, mock_fn, was_called_with} = import '@fink/jest'
+{describe, it, expect, mock, mock_fn, was_called_with} = import '@fink/jest'
 
 
-jest.mock './compile', fn:
+mock './compile', fn:
   dict:
     compile_all: mock_fn fn: [{ errors: []}]
 
 
-mock_warn = mock_fn()
+mock_warn = mock_fn _
 
-jest.mock './logging', fn:
+mock './logging', fn:
   dict:
     logger: fn: dict:
       warn: mock_warn
-      error: mock_fn()
+      error: mock_fn _
 
 
 {compile_all} = import './compile'
@@ -23,7 +23,7 @@ describe main, fn:
 
   it 'compiles file without out-dir', fn:
     proc = dict:
-      exit: mock_fn()
+      exit: mock_fn _
       argv: ['node', 'fnk', '--src', './src/index.fnk']
 
     main proc
@@ -38,7 +38,7 @@ describe main, fn:
 
   it 'compiles dir to out-dir', fn:
     proc = dict:
-      exit: mock_fn()
+      exit: mock_fn _
       argv: ['node', 'fnk', '--src', './src', '--out-dir', './build/test']
 
     main proc
@@ -53,7 +53,7 @@ describe main, fn:
 
   it 'ignores files', fn:
     proc = dict:
-      exit: mock_fn()
+      exit: mock_fn _
       argv: ['node', 'fnk', '--src', './src', '--ignore', './src/*.test.*']
 
     main proc
@@ -68,7 +68,7 @@ describe main, fn:
 
   it 'compiles with source maps', fn:
     proc = dict:
-      exit: mock_fn()
+      exit: mock_fn _
       argv: list:
         'node', 'fnk'
         '--src', './src'
@@ -91,7 +91,7 @@ describe main, fn:
 
   it 'compiles as es6 module', fn:
     proc = dict:
-      exit: mock_fn()
+      exit: mock_fn _
       argv: list:
         'node', 'fnk'
         '--src', './src'
@@ -118,7 +118,7 @@ describe main, fn:
 
     proc = dict:
       argv: ['node', 'fnk', '--src', './src', '--ignore', './src/*.test.*'],
-      exit: mock_fn()
+      exit: mock_fn _
 
     main proc
 

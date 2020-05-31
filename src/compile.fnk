@@ -8,7 +8,7 @@
 {get_files} = import './files'
 {logger} = import './logging'
 
-{warn} = logger()
+{warn} = logger _
 
 
 transform = fn source, filename, options:
