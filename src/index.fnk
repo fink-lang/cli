@@ -4,7 +4,7 @@
 {compile_all} = import './compile'
 {logger} = import './logging'
 
-{warn, error} = logger()
+{warn, error} = logger _
 
 
 error_exit_code = -1
@@ -67,7 +67,7 @@ main = fn process:
         choices: ['cjs', 'mjs']
         default: 'cjs'
 
-    help()
+    help _
 
   handle_compile process, argv
 

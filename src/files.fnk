@@ -10,7 +10,7 @@ walk = fn dir:
       path = join dir, entry.name
 
       files = match entry:
-        ?.isDirectory(): walk path
+        ?.isDirectory _: walk path
         else: [path]
       ...files
 
@@ -19,7 +19,7 @@ expand_source = fn file_or_dir:
   stat = statSync file_or_dir
 
   match stat:
-    ?.isDirectory():
+    ?.isDirectory _:
       pipe walk file_or_dir:
         map src_path:
           {src_path, src_dir: file_or_dir}

@@ -6,7 +6,7 @@
 describe logger, fn:
 
   it 'logs to console', fn:
-    {log, error, warn, debug} = logger()
+    {log, error, warn, debug} = logger _
 
     expect
       log

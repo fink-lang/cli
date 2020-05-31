@@ -1,13 +1,13 @@
 {rmdirSync, writeFileSync} = import 'fs'
-{describe, it, expect, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest'
+{describe, it, expect, mock, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest'
 {length} = import '@fink/std-lib/iter'
 
 
-jest.mock './logging', fn:
+mock './logging', fn:
   dict:
     logger: fn: dict:
-      warn: mock_fn()
-      error: mock_fn()
+      warn: mock_fn _
+      error: mock_fn _
 
 {readdirSync} = import 'fs'
 
@@ -17,7 +17,7 @@ jest.mock './logging', fn:
 describe compile_all, fn:
 
   it 'compiles files to out-dir', fn:
-    stdout = {write: mock_fn()}
+    stdout = {write: mock_fn _}
     rmdirSync './build/test', {recursive: true}
 
     [...result] = compile_all {stdout}, ['./src'], './build/test'
@@ -34,7 +34,7 @@ describe compile_all, fn:
 
 
   it 'ignores files', fn:
-    stdout = {write: mock_fn()}
+    stdout = {write: mock_fn _}
     rmdirSync './build/test', {recursive: true}
 
     [...result] = compile_all
@@ -53,7 +53,7 @@ describe compile_all, fn:
 
 
   it 'compiles as es6 module with inline source-maps to stdout', fn:
-    stdout = {write: mock_fn()}
+    stdout = {write: mock_fn _}
     writeFileSync
       './build/test-file.fnk'
       `
@@ -76,7 +76,7 @@ describe compile_all, fn:
 
 
   it 'compiles as es6 module without source-maps to stdout', fn:
-    stdout = {write: mock_fn()}
+    stdout = {write: mock_fn _}
     writeFileSync
       './build/test-file.fnk'
       `
@@ -100,8 +100,9 @@ describe compile_all, fn:
         export const bar = foo * 2;
       '
 
+
   it 'compiles as cjs module without source-maps to stdout', fn:
-    stdout = {write: mock_fn()}
+    stdout = {write: mock_fn _}
     writeFileSync
       './build/test-file.fnk'
       `
@@ -129,9 +130,8 @@ describe compile_all, fn:
         exports.bar = bar;
       `
 
-
   it 'handles parse errors', fn:
-    stdout = {write: mock_fn()}
+    stdout = {write: mock_fn _}
     writeFileSync './build/test-file.fnk', 'foo bar ['
 
     {errors} = pipe compile_all {stdout}, ['./build/test-file.fnk']:
@@ -143,5 +143,4 @@ describe compile_all, fn:
     expect
       length errors
       to_equal 1
-
 
