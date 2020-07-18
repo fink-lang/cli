@@ -1,4 +1,5 @@
 {describe, it, expect, to_equal} = import '@fink/jest'
+{console} = import '@fink/js-interop/globals'
 
 {logger} = import './logging'
 
