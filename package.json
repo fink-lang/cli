@@ -43,8 +43,8 @@
   "devDependencies": {
     "@fink/cli": "^6.0.0",
     "@fink/jest": "^5.0.0",
-    "@fink/larix": "^10.0.1",
-    "@fink/loxia": "^10.1.1",
+    "@fink/larix": "^12.0.0",
+    "@fink/loxia": "^12.0.0",
     "commitizen": "^4.1.0",
     "cz-conventional-changelog": "^3.2.0",
     "jest-cli": "^26.0.0",
@@ -54,6 +54,6 @@
   "dependencies": {
     "minimatch": "^3.0.4",
     "yargs": "^15.3.1",
-    "@fink/std-lib": "^2.1.0"
+    "@fink/std-lib": "^3.0.0"
   }
 }
