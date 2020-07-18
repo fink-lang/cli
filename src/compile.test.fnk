@@ -56,10 +56,10 @@ describe compile_all, fn:
     stdout = {write: mock_fn _}
     writeFileSync
       './build/test-file.fnk'
-      `
+      "
         {foo} = import '@fink/test'
         bar = foo * 2
-      `
+      "
 
     [...result] = compile_all
       {stdout}
@@ -79,10 +79,10 @@ describe compile_all, fn:
     stdout = {write: mock_fn _}
     writeFileSync
       './build/test-file.fnk'
-      `
+      "
         {foo} = import '@fink/test'
         bar = foo * 2
-      `
+      "
 
     [...result] = compile_all
       {stdout}
@@ -105,10 +105,10 @@ describe compile_all, fn:
     stdout = {write: mock_fn _}
     writeFileSync
       './build/test-file.fnk'
-      `
+      "
         {foo} = import '@fink/test'
         bar = foo * 2
-      `
+      "
 
     [...result] = compile_all
       {stdout}
@@ -121,14 +121,14 @@ describe compile_all, fn:
 
     expect
       stdout.write
-      was_called_with `
+      was_called_with '
         const {
           foo
         } = require("@fink/test");
 
         const bar = foo * 2;
         exports.bar = bar;
-      `
+      '
 
   it 'handles parse errors', fn:
     stdout = {write: mock_fn _}
