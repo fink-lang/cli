@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+
+{process} = import '@fink/js-interop/globals'
 {yargs, config, option, usage, version, help} = import './yargs'
 
 {compile_all} = import './compile'
