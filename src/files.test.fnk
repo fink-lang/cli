@@ -37,8 +37,16 @@ describe get_files, fn:
       to_equal []
 
 
-  it 'gets files from dir', fn:
-    [...files] = get_files ['.'], './build/test'
+  it 'gets files from dir and output with custom ext', fn:
+    [...files] = get_files ['.'], './build/test', false, '.mjs'
+
+    expect
+      files
+      to_match_snapshot
+
+
+  it 'gets files from dir and output with .js', fn:
+    [...files] = get_files ['.'], './build/test', false
 
     expect
       files

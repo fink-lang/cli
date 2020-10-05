@@ -28,7 +28,7 @@ expand_source = fn file_or_dir:
       [{src_path: (join file_or_dir), src_dir}]
 
 
-get_files = fn sources, out_dir, ignore=false:
+get_files = fn sources, out_dir, ignore=false, file_ext='.js':
   pipe sources:
     map source:
       ...expand_source source
@@ -48,6 +48,6 @@ get_files = fn sources, out_dir, ignore=false:
 
       out_path = match out_dir:
         false: false
-        else: join out_dir, rel_dir, '${name}.js'
+        else: join out_dir, rel_dir, '${name}${file_ext}'
 
       {src_path, out_path, rel_path}

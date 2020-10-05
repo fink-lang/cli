@@ -11,6 +11,7 @@
 {warn} = logger _
 
 
+
 transform = fn source, filename, options:
   ast = parse source, filename
 
@@ -21,7 +22,7 @@ transform = fn source, filename, options:
       generate
         ast, filename, source
         dict:
-          use_babel_conf: false
+          babel: {babelrc: false, configFile: false}
           ...options
 
 
@@ -30,6 +31,7 @@ compile = fn filename, options:
   buff = readFileSync filename
   source = decode buff, 'utf-8'
   transform source, filename, options
+
 
 
 output_to_dir = fn {code, src_path, out_path}:
@@ -45,6 +47,7 @@ output_to_dir = fn {code, src_path, out_path}:
   out_path
 
 
+
 output_code = fn {stdout}, item:
   match item.out_path:
     false: stdout.write '${item.code}\n'
@@ -52,8 +55,9 @@ output_code = fn {stdout}, item:
   item
 
 
+
 compile_all = fn proc, src, out_dir=false, ignore=false, options={}:
-  files = get_files src, out_dir, ignore
+  files = get_files src, out_dir, ignore, options.module_ext
 
   pipe files:
     map {src_path, out_path, rel_path}:
