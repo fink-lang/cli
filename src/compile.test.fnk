@@ -80,7 +80,7 @@ describe compile_all, fn:
     writeFileSync
       './build/test-file.fnk'
       "
-        {foo} = import '@fink/test'
+        {foo} = import '@fink/test/foo.fnk'
         bar = foo * 2
       "
 
@@ -96,7 +96,7 @@ describe compile_all, fn:
     expect
       stdout.write
       was_called_with '
-        import { foo } from "@fink/test";
+        import { foo } from "@fink/test/foo.js";
         export const bar = foo * 2;
       '
 

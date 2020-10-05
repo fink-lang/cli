@@ -33,7 +33,7 @@ describe main, fn:
       was_called_with
         proc
         ['./src/index.fnk'], false, false
-        {source_maps: false, module_type: 'cjs'}
+        {source_maps: false, module_type: 'esm', module_ext: '.js'}
 
 
   it 'compiles dir to out-dir', fn:
@@ -48,7 +48,7 @@ describe main, fn:
       was_called_with
         proc
         ['./src'], './build/test', false
-        {source_maps: false, module_type: 'cjs'}
+        {source_maps: false, module_type: 'esm', module_ext: '.js'}
 
 
   it 'ignores files', fn:
@@ -63,7 +63,7 @@ describe main, fn:
       was_called_with
         proc
         ['./src'], false, './src/*.test.*'
-        {source_maps: false, module_type: 'cjs'}
+        {source_maps: false, module_type: 'esm', module_ext: '.js'}
 
 
   it 'compiles with source maps', fn:
@@ -82,7 +82,7 @@ describe main, fn:
       was_called_with
         proc
         ['./src'], false, './src/*.test.*'
-        {source_maps: 'inline', module_type: 'cjs'}
+        {source_maps: 'inline', module_type: 'esm', module_ext: '.js'}
 
     expect
       mock_warn
@@ -96,7 +96,8 @@ describe main, fn:
         'node', 'fnk'
         '--src', './src'
         '--ignore', './src/*.test.*'
-        '--module-type', 'mjs'
+        '--module-type', 'esm'
+        '--module-ext', '.mjs'
 
     main proc
 
@@ -105,7 +106,7 @@ describe main, fn:
       was_called_with
         proc
         ['./src'], false, './src/*.test.*'
-        {source_maps: false, module_type: 'mjs'}
+        {source_maps: false, module_type: 'esm', module_ext: '.mjs'}
 
     expect
       mock_warn

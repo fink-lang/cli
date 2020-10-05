@@ -37,24 +37,24 @@
     }
   },
   "peerDependencies": {
-    "@fink/loxia": ">=9.0.0",
+    "@fink/loxia": ">=13.0.0",
     "@fink/larix": ">=9.0.0"
   },
   "devDependencies": {
-    "@fink/cli": "^6.2.0",
-    "@fink/jest": "^5.2.0",
-    "@fink/larix": "^12.2.1",
-    "@fink/loxia": "^12.2.1",
+    "@fink/cli": "^6.2.1",
+    "@fink/jest": "^5.4.0",
+    "@fink/larix": "^12.3.0",
+    "@fink/loxia": "^13.0.0",
     "commitizen": "^4.2.1",
     "cz-conventional-changelog": "^3.3.0",
     "jest-cli": "^26.4.2",
     "npx-run": "^2.1.2",
-    "semantic-release": "^17.0.4"
+    "semantic-release": "^17.1.2"
   },
   "dependencies": {
-    "@fink/js-interop": "^1.1.0",
-    "@fink/std-lib": "^4.0.0",
+    "@fink/js-interop": "^1.1.1",
+    "@fink/std-lib": "^4.0.1",
     "minimatch": "^3.0.4",
-    "yargs": "^15.3.1"
+    "yargs": "^16.0.3"
   }
 }

@@ -19,6 +19,7 @@ handle_compile = fn process, argv:
     dict:
       source_maps: argv.'source-maps'
       module_type: argv.'module-type'
+      module_ext: argv.'module-ext'
 
   {processed, errors} = pipe compilation:
     fold item, {processed=0, errors=0}={}:
@@ -65,9 +66,13 @@ main = fn process:
         default: false
 
     option 'module-type', dict:
-        describe: 'Type of modules to generate (cjs|mjs)'
-        choices: ['cjs', 'mjs']
-        default: 'cjs'
+        describe: 'Type of modules to generate (cjs|esm)'
+        choices: ['cjs', 'esm']
+        default: 'esm'
+
+    option 'module-ext', dict:
+        describe: 'Extension to use for output files.'
+        default: '.js'
 
     help _
 
