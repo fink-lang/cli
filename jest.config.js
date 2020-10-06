@@ -1,10 +1,10 @@
 
-module.exports = {
+export default {
   testEnvironment: 'node',
   setupFiles: [],
   moduleFileExtensions: ['js', 'fnk'],
   transform: {
-    '^.+\\.fnk$': ['@fink/jest/transform']
+    '^.+\\.fnk$': ['@fink/jest/transform.js']
   },
   transformIgnorePatterns: ['.+/node_modules/', '<rootDir>/build/'],
 
@@ -14,7 +14,8 @@ module.exports = {
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
   watchPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 
-  snapshotResolver: '@fink/jest/snapshot-resolver',
+  resolver: '@fink/jest/cjs/module-resolver.js',
+  snapshotResolver: '@fink/jest/snapshot-resolver.js',
 
   timers: 'modern',
 

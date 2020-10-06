@@ -47,11 +47,6 @@ Array [
     "rel_path": "src/logging.test.fnk",
     "src_path": "src/logging.test.fnk",
   },
-  Object {
-    "out_path": "build/test/src/yargs.js",
-    "rel_path": "src/yargs.fnk",
-    "src_path": "src/yargs.fnk",
-  },
 ]
 `;
 
@@ -101,11 +96,6 @@ Array [
     "out_path": "build/test/src/logging.test.mjs",
     "rel_path": "src/logging.test.fnk",
     "src_path": "src/logging.test.fnk",
-  },
-  Object {
-    "out_path": "build/test/src/yargs.mjs",
-    "rel_path": "src/yargs.fnk",
-    "src_path": "src/yargs.fnk",
   },
 ]
 `;

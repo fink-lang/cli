@@ -1,4 +1,4 @@
-{console} = import '@fink/js-interop/globals'
+{console} = import '@fink/js-interop/globals.fnk'
 
 
 logger = fn:

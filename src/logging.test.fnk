@@ -1,7 +1,7 @@
-{describe, it, expect, to_equal} = import '@fink/jest'
-{console} = import '@fink/js-interop/globals'
+{describe, it, expect, to_equal} = import '@fink/jest/test.fnk'
+{console} = import '@fink/js-interop/globals.fnk'
 
-{logger} = import './logging'
+{logger} = import './logging.fnk'
 
 
 describe logger, fn:

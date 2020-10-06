@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-{process} = import '@fink/js-interop/globals'
-{yargs, config, option, usage, version, help} = import './yargs'
+{process} = import '@fink/js-interop/globals.fnk'
+yargs = import 'yargs'
 
-{compile_all} = import './compile'
-{logger} = import './logging'
+{compile_all} = import './compile.fnk'
+{logger} = import './logging.fnk'
 
 {warn, error} = logger _
 
@@ -44,41 +44,41 @@ main = fn process:
   [,, ...args] = process.argv
 
   {argv} = pipe yargs args:
-    config {'camel-case-expansion': false}
-    version false
+    ?.parserConfiguration {'camel-case-expansion': false}
+    ?.version false
 
-    usage '$0 --src file-or-dir [...] [--out-dir ouput-dir]'
+    ?.usage '$0 --src file-or-dir [...] [--out-dir ouput-dir]'
 
-    option 'src', dict:
+    ?.option 'src', dict:
         array: true
         describe: 'The directory containing files to compile.'
 
-    option 'out-dir', dict:
+    ?.option 'out-dir', dict:
         describe: 'The directory to generate code in.'
         default: false
 
-    option 'ignore', dict:
+    ?.option 'ignore', dict:
         describe: 'Glob paths/patterns for files to ignore'
         default: false
 
-    option 'source-maps', dict:
+    ?.option 'source-maps', dict:
         describe: 'Generate sourcemaps'
         default: false
 
-    option 'module-type', dict:
+    ?.option 'module-type', dict:
         describe: 'Type of modules to generate (cjs|esm)'
         choices: ['cjs', 'esm']
         default: 'esm'
 
-    option 'module-ext', dict:
+    ?.option 'module-ext', dict:
         describe: 'Extension to use for output files.'
         default: '.js'
 
-    help _
+    ?.help _
 
   handle_compile process, argv
 
 
-match require.main:
-  # istanbul ignore next
-  module: main process
+# TODO: loxia should handle auto running main functions
+main process
+

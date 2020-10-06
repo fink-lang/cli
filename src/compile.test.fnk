@@ -1,9 +1,9 @@
 {rmdirSync, writeFileSync} = import 'fs'
-{describe, it, expect, mock, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest'
-{length} = import '@fink/std-lib/iter'
+{describe, it, expect, mock, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest/test.fnk'
+{length} = import '@fink/std-lib/iter.fnk'
 
 
-mock './logging', fn:
+mock './logging.fnk', fn:
   dict:
     logger: fn: dict:
       warn: mock_fn _
@@ -11,7 +11,8 @@ mock './logging', fn:
 
 {readdirSync} = import 'fs'
 
-{compile_all} = import './compile'
+{compile_all} = import './compile.fnk'
+
 
 
 describe compile_all, fn:
@@ -26,7 +27,7 @@ describe compile_all, fn:
 
     expect
       length result
-      to_equal 9
+      to_equal 8
 
     expect
        files
@@ -45,7 +46,7 @@ describe compile_all, fn:
 
     expect
       length result
-      to_equal 5
+      to_equal 4
 
     expect
        files

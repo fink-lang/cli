@@ -1,12 +1,12 @@
 {readFileSync, writeFileSync, mkdirSync, existsSync} = import 'fs'
 {dirname} = import 'path'
 
-{parse} = import '@fink/larix'
-{generate} = import '@fink/loxia'
-{decode} = import '@fink/std-lib/str'
+{parse} = import '@fink/larix/parser.fnk'
+{generate} = import '@fink/loxia/generate.fnk'
+{decode} = import '@fink/std-lib/str.fnk'
 
-{get_files} = import './files'
-{logger} = import './logging'
+{get_files} = import './files.fnk'
+{logger} = import './logging.fnk'
 
 {warn} = logger _
 

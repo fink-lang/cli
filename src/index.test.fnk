@@ -1,22 +1,22 @@
-{describe, it, expect, mock, mock_fn, was_called_with} = import '@fink/jest'
+{describe, it, expect, mock, mock_fn, was_called_with} = import '@fink/jest/test.fnk'
 
 
-mock './compile', fn:
+mock './compile.fnk', fn:
   dict:
     compile_all: mock_fn fn: [{ errors: []}]
 
 
 mock_warn = mock_fn _
 
-mock './logging', fn:
+mock './logging.fnk', fn:
   dict:
     logger: fn: dict:
       warn: mock_warn
       error: mock_fn _
 
 
-{compile_all} = import './compile'
-{main, error_exit_code} = import './index'
+{compile_all} = import './compile.fnk'
+{main, error_exit_code} = import './index.fnk'
 
 
 describe main, fn:
