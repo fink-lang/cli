@@ -1,7 +1,7 @@
 {readdirSync, statSync} = import 'fs'
 {join, dirname, basename, relative} = import 'path'
 minimatch = import 'minimatch'
-{ends_with} = import '@fink/std-lib/str'
+{ends_with} = import '@fink/std-lib/str.fnk'
 
 
 walk = fn dir:

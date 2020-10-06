@@ -6,6 +6,7 @@
   "engines": {
     "node": ">=14.0.0"
   },
+  "type": "module",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -21,7 +22,7 @@
     "clean": "rimraf ./build",
     "build": "run build:*",
     "build:dir": "mkdir -p ./build/pkg/",
-    "build:fnk": "fnk --src src --out-dir build/pkg --ignore 'src/**/*.test.fnk'",
+    "build:fnk": "fnk --module-type esm --src ./src --out-dir build/pkg --ignore 'src/**/*.test.fnk'",
     "build:files": "cp ./package.json ./README.md ./LICENSE ./build/pkg/",
     "test": "run jest",
     "jest": "jest --verbose --runInBand --no-cache ",
@@ -37,23 +38,23 @@
     }
   },
   "peerDependencies": {
-    "@fink/loxia": ">=13.0.0",
-    "@fink/larix": ">=9.0.0"
+    "@fink/loxia": ">=14.0.2",
+    "@fink/larix": ">=13.0.0"
   },
   "devDependencies": {
-    "@fink/cli": "^6.2.1",
-    "@fink/jest": "^5.4.0",
-    "@fink/larix": "^12.3.0",
-    "@fink/loxia": "^13.0.0",
+    "@fink/cli": "^7.0.0",
+    "@fink/jest": "^7.0.0",
+    "@fink/larix": "^13.1.0",
+    "@fink/loxia": "^14.0.2",
     "commitizen": "^4.2.1",
     "cz-conventional-changelog": "^3.3.0",
-    "jest-cli": "^26.4.2",
+    "jest-cli": "^26.5.2",
     "npx-run": "^2.1.2",
     "semantic-release": "^17.1.2"
   },
   "dependencies": {
-    "@fink/js-interop": "^1.1.1",
-    "@fink/std-lib": "^4.0.1",
+    "@fink/js-interop": "^2.0.0",
+    "@fink/std-lib": "^5.0.0",
     "minimatch": "^3.0.4",
     "yargs": "^16.0.3"
   }

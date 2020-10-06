@@ -21,7 +21,6 @@ Array [
   "index.test.js",
   "logging.js",
   "logging.test.js",
-  "yargs.js",
 ]
 `;
 
@@ -31,6 +30,5 @@ Array [
   "files.js",
   "index.js",
   "logging.js",
-  "yargs.js",
 ]
 `;
