@@ -135,11 +135,14 @@ describe compile_all, fn:
     stdout = {write: mock_fn _}
     writeFileSync './build/test-file.fnk', 'foo bar ['
 
-    {errors} = pipe compile_all {stdout}, ['./build/test-file.fnk']:
-      find {errors}:
+    errors = pipe compile_all {stdout}, ['./build/test-file.fnk']:
+      filter {errors}:
         match errors:
           []: true
           else: false
+      map {errors}:
+        ...errors
+      [...?]
 
     expect
       length errors
