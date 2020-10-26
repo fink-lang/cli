@@ -3,6 +3,12 @@
   "version": "0.0.0-semantically-released",
   "description": "CLI for compiling fink to JS",
   "license": "MIT",
+  "keywords": [
+    "compiler",
+    "cli",
+    "fink",
+    "fink-lang"
+  ],
   "engines": {
     "node": ">=14.0.0"
   },
@@ -30,7 +36,7 @@
     "release": "semantic-release"
   },
   "bin": {
-    "fnk": "./index.js"
+    "fnk": "index.js"
   },
   "config": {
     "commitizen": {
@@ -38,11 +44,11 @@
     }
   },
   "peerDependencies": {
-    "@fink/loxia": ">=14.0.2",
-    "@fink/larix": ">=13.0.0"
+    "@fink/larix": ">=13.0.0",
+    "@fink/loxia": ">=14.0.2"
   },
   "devDependencies": {
-    "@fink/cli": "^7.0.0",
+    "@fink/cli": "^8.0.0",
     "@fink/jest": "^7.0.0",
     "@fink/larix": "^13.1.0",
     "@fink/loxia": "^14.0.2",
@@ -54,7 +60,7 @@
   },
   "dependencies": {
     "@fink/js-interop": "^2.0.1",
-    "@fink/std-lib": "^5.0.0",
+    "@fink/std-lib": "^6.0.0",
     "minimatch": "^3.0.4",
     "yargs": "^16.0.3"
   }

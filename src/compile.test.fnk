@@ -1,4 +1,4 @@
-{rmdirSync, writeFileSync} = import 'fs'
+{rmSync, writeFileSync} = import 'fs'
 {describe, it, expect, mock, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest/test.fnk'
 {length} = import '@fink/std-lib/iter.fnk'
 
@@ -19,7 +19,7 @@ describe compile_all, fn:
 
   it 'compiles files to out-dir', fn:
     stdout = {write: mock_fn _}
-    rmdirSync './build/test', {recursive: true}
+    rmSync './build/test', {recursive: true, force: true}
 
     [...result] = compile_all {stdout}, ['./src'], './build/test'
 
@@ -36,7 +36,7 @@ describe compile_all, fn:
 
   it 'ignores files', fn:
     stdout = {write: mock_fn _}
-    rmdirSync './build/test', {recursive: true}
+    rmSync './build/test', {recursive: true, force: true}
 
     [...result] = compile_all
       {stdout}
