@@ -13,6 +13,7 @@ yargs = import 'yargs'
 error_exit_code = -1
 
 
+
 handle_compile = fn process, argv:
   compilation = compile_all
     process
@@ -77,6 +78,7 @@ main = fn process:
     ?.help _
 
   handle_compile process, argv
+
 
 
 # TODO: loxia should handle auto running main functions
