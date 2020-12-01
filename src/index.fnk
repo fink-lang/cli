@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 {process} = import '@fink/js-interop/globals.fnk'
+{is_empty} = import '@fink/std-lib/iter.fnk'
 yargs = import 'yargs'
 
 {compile_all} = import './compile.fnk'
@@ -16,7 +17,7 @@ handle_compile = fn process, argv:
   compilation = compile_all
     process
     argv.src, argv.'out-dir', argv.ignore
-    dict:
+    rec:
       source_maps: argv.'source-maps'
       module_type: argv.'module-type'
       module_ext: argv.'module-ext'
@@ -25,13 +26,12 @@ handle_compile = fn process, argv:
     fold item, {processed=0, errors=0}={}:
 
       match item:
-        {errors: [{}]}:
+        {errors: is_empty ?}:
+          {processed: processed + 1, errors}
+        else:
           {errors: [{error: err, stack}]} = item
           error err, stack
           {processed: processed + 1, errors: errors + 1}
-
-        else:
-          {processed: processed + 1, errors}
 
   warn '\nprocessed ${processed} file(s)'
 
@@ -49,28 +49,28 @@ main = fn process:
 
     ?.usage '$0 --src file-or-dir [...] [--out-dir ouput-dir]'
 
-    ?.option 'src', dict:
+    ?.option 'src', rec:
         array: true
         describe: 'The directory containing files to compile.'
 
-    ?.option 'out-dir', dict:
+    ?.option 'out-dir', rec:
         describe: 'The directory to generate code in.'
         default: false
 
-    ?.option 'ignore', dict:
+    ?.option 'ignore', rec:
         describe: 'Glob paths/patterns for files to ignore'
         default: false
 
-    ?.option 'source-maps', dict:
+    ?.option 'source-maps', rec:
         describe: 'Generate sourcemaps'
         default: false
 
-    ?.option 'module-type', dict:
+    ?.option 'module-type', rec:
         describe: 'Type of modules to generate (cjs|esm)'
         choices: ['cjs', 'esm']
         default: 'esm'
 
-    ?.option 'module-ext', dict:
+    ?.option 'module-ext', rec:
         describe: 'Extension to use for output files.'
         default: '.js'
 

@@ -4,6 +4,7 @@
 {parse} = import '@fink/larix/parser.fnk'
 {generate} = import '@fink/loxia/generate.fnk'
 {decode} = import '@fink/std-lib/str.fnk'
+{is_empty} = import '@fink/std-lib/iter.fnk'
 
 {get_files} = import './files.fnk'
 {logger} = import './logging.fnk'
@@ -16,14 +17,15 @@ transform = fn source, filename, options:
   ast = parse source, filename
 
   match ast:
-    {errors: [{}]}:
-      {errors: ast.errors}
-    else:
+    {errors: is_empty ?}:
       generate
         ast, filename, source
-        dict:
+        rec:
           babel: {babelrc: false, configFile: false}
           ...options
+    else:
+      {errors: ast.errors}
+
 
 
 
@@ -64,12 +66,12 @@ compile_all = fn proc, src, out_dir=false, ignore=false, options={}:
       compiled = compile src_path, options
 
       match compiled:
-        {errors: [{}]}:
-          {errors} = compiled
-          {src_path, out_path, rel_path, errors}
-
-        else:
+        {errors: is_empty ?}:
           {code} = compiled
           item = {src_path, out_path, rel_path, code}
           output_code proc, item
+        else:
+          {errors} = compiled
+          {src_path, out_path, rel_path, errors}
+
 
