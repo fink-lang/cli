@@ -2,15 +2,15 @@
 
 
 mock './compile.fnk', fn:
-  dict:
+  rec:
     compile_all: mock_fn fn: [{ errors: []}]
 
 
 mock_warn = mock_fn _
 
 mock './logging.fnk', fn:
-  dict:
-    logger: fn: dict:
+  rec:
+    logger: fn: rec:
       warn: mock_warn
       error: mock_fn _
 
@@ -22,7 +22,7 @@ mock './logging.fnk', fn:
 describe main, fn:
 
   it 'compiles file without out-dir', fn:
-    proc = dict:
+    proc = rec:
       exit: mock_fn _
       argv: ['node', 'fnk', '--src', './src/index.fnk']
 
@@ -37,7 +37,7 @@ describe main, fn:
 
 
   it 'compiles dir to out-dir', fn:
-    proc = dict:
+    proc = rec:
       exit: mock_fn _
       argv: ['node', 'fnk', '--src', './src', '--out-dir', './build/test']
 
@@ -52,7 +52,7 @@ describe main, fn:
 
 
   it 'ignores files', fn:
-    proc = dict:
+    proc = rec:
       exit: mock_fn _
       argv: ['node', 'fnk', '--src', './src', '--ignore', './src/*.test.*']
 
@@ -67,7 +67,7 @@ describe main, fn:
 
 
   it 'compiles with source maps', fn:
-    proc = dict:
+    proc = rec:
       exit: mock_fn _
       argv: list:
         'node', 'fnk'
@@ -90,7 +90,7 @@ describe main, fn:
 
 
   it 'compiles as es6 module', fn:
-    proc = dict:
+    proc = rec:
       exit: mock_fn _
       argv: list:
         'node', 'fnk'
@@ -117,7 +117,7 @@ describe main, fn:
     compile_all.mockImplementation fn:
       [{errors: [{error: 'test-error', stack: 'test-stack'}]}]
 
-    proc = dict:
+    proc = rec:
       argv: ['node', 'fnk', '--src', './src', '--ignore', './src/*.test.*'],
       exit: mock_fn _
 

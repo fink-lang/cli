@@ -3,6 +3,7 @@
 {get_files} = import './files.fnk'
 
 
+
 describe get_files, fn:
 
   it 'gets single file', fn:
@@ -11,7 +12,7 @@ describe get_files, fn:
     expect
       files
       to_equal
-        list: dict:
+        list: rec:
           src_path: 'src/files.test.fnk',
           out_path: 'build/files.test.js',
           rel_path: 'files.test.fnk'
@@ -23,7 +24,7 @@ describe get_files, fn:
     expect
       files
       to_equal
-        list: dict:
+        list: rec:
           src_path: 'src/files.test.fnk',
           out_path: false,
           rel_path: 'files.test.fnk'
@@ -51,5 +52,3 @@ describe get_files, fn:
     expect
       files
       to_match_snapshot
-
-

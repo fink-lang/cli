@@ -4,8 +4,8 @@
 
 
 mock './logging.fnk', fn:
-  dict:
-    logger: fn: dict:
+  rec:
+    logger: fn: rec:
       warn: mock_fn _
       error: mock_fn _
 

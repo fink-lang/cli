@@ -4,6 +4,7 @@ minimatch = import 'minimatch'
 {ends_with} = import '@fink/std-lib/str.fnk'
 
 
+
 walk = fn dir:
   pipe readdirSync dir, {withFileTypes: true}:
     map entry:
@@ -13,6 +14,7 @@ walk = fn dir:
         ?.isDirectory _: walk path
         else: [path]
       ...files
+
 
 
 expand_source = fn file_or_dir:
@@ -26,6 +28,7 @@ expand_source = fn file_or_dir:
     else:
       src_dir = dirname file_or_dir
       [{src_path: (join file_or_dir), src_dir}]
+
 
 
 get_files = fn sources, out_dir, ignore=false, file_ext='.js':
