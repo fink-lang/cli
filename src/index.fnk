@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 {process} = import '@fink/js-interop/globals.fnk'
-{is_empty} = import '@fink/std-lib/iter.fnk'
+{is_empty, fold} = import '@fink/std-lib/iter.fnk'
 yargs = import 'yargs'
 
 {compile_all} = import './compile.fnk'
@@ -24,8 +24,7 @@ handle_compile = fn process, argv:
       module_ext: argv.'module-ext'
 
   {processed, errors} = pipe compilation:
-    fold item, {processed=0, errors=0}={}:
-
+    fold fn item, {processed=0, errors=0}={}:
       match item:
         {errors: is_empty ?}:
           {processed: processed + 1, errors}

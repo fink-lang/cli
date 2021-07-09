@@ -2,18 +2,20 @@
 {join, dirname, basename, relative} = import 'path'
 minimatch = import 'minimatch'
 {ends_with} = import '@fink/std-lib/str.fnk'
+{map, filter, flatten} = import '@fink/std-lib/iter.fnk'
 
 
 
 walk = fn dir:
   pipe readdirSync dir, {withFileTypes: true}:
-    map entry:
+    map fn entry:
       path = join dir, entry.name
 
-      files = match entry:
+      match entry:
         ?.isDirectory _: walk path
         else: [path]
-      ...files
+
+    flatten
 
 
 
@@ -23,7 +25,7 @@ expand_source = fn file_or_dir:
   match stat:
     ?.isDirectory _:
       pipe walk file_or_dir:
-        map src_path:
+        map fn src_path:
           {src_path, src_dir: file_or_dir}
     else:
       src_dir = dirname file_or_dir
@@ -33,18 +35,19 @@ expand_source = fn file_or_dir:
 
 get_files = fn sources, out_dir, ignore=false, file_ext='.js':
   pipe sources:
-    map source:
-      ...expand_source source
+    map fn source:
+      expand_source source
+    flatten
 
-    filter {src_path}:
+    filter fn {src_path}:
       ends_with src_path, '.fnk'
 
-    filter {src_path}:
+    filter fn {src_path}:
       match ignore:
         false: true
         else: not minimatch src_path, join ignore
 
-    map {src_path, src_dir}:
+    map fn {src_path, src_dir}:
       rel_path = relative src_dir, src_path
       rel_dir = dirname rel_path
       name = basename src_path, '.fnk'

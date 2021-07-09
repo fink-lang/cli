@@ -1,6 +1,6 @@
 {rmSync, writeFileSync} = import 'fs'
 {describe, it, expect, mock, mock_fn, to_match_snapshot, was_called_with, to_equal} = import '@fink/jest/test.fnk'
-{length} = import '@fink/std-lib/iter.fnk'
+{length, map, filter, flatten} = import '@fink/std-lib/iter.fnk'
 
 
 mock './logging.fnk', fn:
@@ -136,12 +136,12 @@ describe compile_all, fn:
     writeFileSync './build/test-file.fnk', 'foo bar ['
 
     errors = pipe compile_all {stdout}, ['./build/test-file.fnk']:
-      filter {errors}:
+      filter fn {errors}:
         match errors:
           []: true
           else: false
-      map {errors}:
-        ...errors
+      map fn {errors}: errors
+      flatten
       [...?]
 
     expect
