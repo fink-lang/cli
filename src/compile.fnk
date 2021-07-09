@@ -4,7 +4,7 @@
 {parse} = import '@fink/larix/parser.fnk'
 {generate} = import '@fink/loxia/generate.fnk'
 {decode} = import '@fink/std-lib/str.fnk'
-{is_empty} = import '@fink/std-lib/iter.fnk'
+{is_empty, map} = import '@fink/std-lib/iter.fnk'
 
 {get_files} = import './files.fnk'
 {logger} = import './logging.fnk'
@@ -61,7 +61,7 @@ compile_all = fn proc, src, out_dir=false, ignore=false, options={}:
   files = get_files src, out_dir, ignore, options.module_ext
 
   pipe files:
-    map {src_path, out_path, rel_path}:
+    map fn {src_path, out_path, rel_path}:
       compiled = compile src_path, options
 
       match compiled:
