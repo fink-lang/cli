@@ -24,7 +24,7 @@ handle_compile = fn process, argv:
       module_ext: argv.'module-ext'
 
   {processed, errors} = pipe compilation:
-    fold fn item, {processed=0, errors=0}={}:
+    fold {processed: 0, errors: 0}, fn item, {processed, errors}:
       match item:
         {errors: is_empty ?}:
           {processed: processed + 1, errors}
