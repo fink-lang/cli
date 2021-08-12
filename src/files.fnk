@@ -35,8 +35,8 @@ expand_source = fn file_or_dir:
 
 get_files = fn sources, out_dir, ignore=false, file_ext='.js':
   pipe sources:
-    map fn source:
-      expand_source source
+    map expand_source ?
+
     flatten
 
     filter fn {src_path}:
